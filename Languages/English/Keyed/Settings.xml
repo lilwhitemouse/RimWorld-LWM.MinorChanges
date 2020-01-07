@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Language data for the Mod Settings (see Settings.cs) -->
+  <LWMMCsettingsWarning>IMPORTANT REMINDER: you MUST restart the game for changes to take effect</LWMMCsettingsWarning>
+  <LWMMCsmelterIsHot>Smelter gives off heat</LWMMCsmelterIsHot>
+  <LWMMCsmelterIsHotDesc>It takes a LOT of heat to smelt steel, and insulation on the Rim is lacking...</LWMMCsmelterIsHotDesc>
+  <LWMMCbigComputersAreHot>Computers get hot too.</LWMMCbigComputersAreHot>
+  <LWMMCbigComputersAreHotDesc>Server rooms need giant air conditioning systems.  Are computers on the Rim somehow super efficient?  Ha.  High Tech Research Benches and multi-analyzers produce heat.</LWMMCbigComputersAreHotDesc>
+  <LWMMCapplyDrugDefaults>Penoxycyline defaults to 'take every 5 days.'</LWMMCapplyDrugDefaults>
+  <LWMMCapplyDrugDefaultsDesc>If there are other drugs that should have this sort of default, let me know?</LWMMCapplyDrugDefaultsDesc>
+  <LWMMCbetterSpots>Better 'Spots.'</LWMMCbetterSpots>
+  <LWMMCbetterSpotsDesc>Lets you place spots pretty much anywhere.\nWant to get married on thrones?  Sure!  In a cornfield?  Sure.  In the river?  Sure.  In the mud?  Sure.  In the lava?  Sur....okay, if you pawns cannot actually get there, then no.  This includes inside walls.  But you can put other spots inside walls and they will /probably/ work.\nSpots affected:\n  Marriage Spot\n  Party Spot\n  Caravan Packing Spot\n  Trading Spot (any mod that uses the defName TradingSpot)</LWMMCbetterSpotsDesc>
+</LanguageData>

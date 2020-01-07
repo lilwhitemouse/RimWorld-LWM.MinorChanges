@@ -31,26 +31,27 @@ namespace LWM.MinorChanges
             Widgets.BeginScrollView(rectWeCanSee, ref scrollPosition, rectThatHasEverything);
             float curY=0f;
             Rect r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
-            Widgets.Label(r, "IMPORTANT REMINDER: you MUST restart the game for changes to take effect");
+            Widgets.Label(r, "LWMMCsettingsWarning".Translate());
+            curY+=LabelHeight+3f;
 
             r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
-            Widgets.CheckboxLabeled(r, "Smelter gives off heat", ref smelterIsHot); // TODO: translate
-            TooltipHandler.TipRegion(r, "It takes a LOT of heat to smelt steel, and insulation on the Rim is lacking...");
+            Widgets.CheckboxLabeled(r, "LWMMCsmelterIsHot".Translate(), ref smelterIsHot);
+            TooltipHandler.TipRegion(r, "LWMMCsmelterIsHotDesc".Translate());
             curY+=LabelHeight+1f;
 
             r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
-            Widgets.CheckboxLabeled(r, "Computers get hot too", ref bigComputersAreHot); // TODO: translate
-            TooltipHandler.TipRegion(r, "Server rooms need giant air conditioning systems.  Are computers on the Rim somehow super efficient?  Ha.  High Tech Research Benches produce heat.");
+            Widgets.CheckboxLabeled(r, "LWMMCbigComputersAreHot".Translate(), ref bigComputersAreHot);
+            TooltipHandler.TipRegion(r, "LWMMCbigComputersAreHotDesc".Translate());
             curY+=LabelHeight+1f;
 
             r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
-            Widgets.CheckboxLabeled(r, "Penoxycyline defaults to 'take every 5 days'", ref applyDrugDefaults); // TODO: translate
-            TooltipHandler.TipRegion(r, "If there are other drugs that should have this sort of default, let me know?");
+            Widgets.CheckboxLabeled(r, "LWMMCapplyDrugDefaults".Translate(), ref applyDrugDefaults);
+            TooltipHandler.TipRegion(r, "LWMMCapplyDrugDefaultsDesc".Translate());
             curY+=LabelHeight+1f;
 
             r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
-            Widgets.CheckboxLabeled(r, "Better 'Spots'", ref betterSpots); // TODO: translate
-            TooltipHandler.TipRegion(r, "Lets you place spots pretty much anywhere.\nWant to get married in a cornfield?  Sure.  In the river?  Sure.  In the mud?  Sure.  In the lava?  Sure....okay, if you pawns cannot get there, then no.  This includes inside walls.\nSpots affected:\n  Marriage Spot\n  Party Spot\n  Caravan Packing Spot\n  Trading Spot (any mod that uses the defName TradingSpot)");
+            Widgets.CheckboxLabeled(r, "LWMMCbetterSpots".Translate(), ref betterSpots);
+            TooltipHandler.TipRegion(r, "LWMMCbetterSpotsDesc".Translate());
             curY+=LabelHeight+1f;
 
             Widgets.EndScrollView();
