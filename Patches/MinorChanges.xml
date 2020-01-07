@@ -1,0 +1,51 @@
+<Patch>
+  <Operation Class="LWM.MinorChanges.PatchOpLWMMC">
+    <optionKey>smelterIsHot</optionKey>
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="ElectricSmelter"]/comps</xpath>
+        <value>
+          <li Class="CompProperties_HeatPusher">
+            <compClass>CompHeatPusherPowered</compClass><!--TODO: maybe only when being used?-->
+            <heatPerSecond>12</heatPerSecond>
+          </li>
+        </value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="FueledSmelter"]/comps</xpath><!--If the mod is added-->
+        <value>
+          <li Class="CompProperties_HeatPusher">
+            <compClass>CompHeatPusherPowered</compClass>
+            <heatPerSecond>10</heatPerSecond>
+          </li>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="LWM.MinorChanges.PatchOpLWMMC">
+    <optionKey>bigComputersAreHot</optionKey>
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="HiTechResearchBench"]/comps</xpath>
+        <value>
+          <li Class="CompProperties_HeatPusher">
+            <compClass>CompHeatPusherPowered</compClass>
+            <heatPerSecond>6</heatPerSecond>
+          </li>
+        </value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="MultiAnalyzer"]/comps</xpath>
+        <value>
+          <li Class="CompProperties_HeatPusher">
+            <compClass>CompHeatPusherPowered</compClass>
+            <heatPerSecond>5</heatPerSecond>
+          </li>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+
+</Patch>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>LWM's Minor Changes</name>
+	<author>lilwhitemouse</author>
+	<supportedVersions>
+		<li>1.0</li>
+	</supportedVersions>
+	<description>A list of minor fixes, tweaks, and changes to the game.  While many of these ARE "fixes," they oh-so-slightly slow the game and probably don't add a whole lot more than a little realism (e.g., smelters giving off heat).  Some of them make the game slightly harder, some make the game much easier to play.  I like all of them (otherwise, I wouldn't have made them, right?)
+
+I have added mod settings that allow turning off most of the changes.  IMPORTANT NOTE: you will have to restart the game to make these changes take place.
+
+Current changes:
+
+ * Smelters give off heat
+ * Computers (hi-tech research benches) give off heat
+ ** (maybe later they will fry if the heat gets too much)
+
+UI:
+ * If you have selected a blueprint, and it gets built, you now have selected the finished item.  Huzzah!
+
+
+
+
+</description>
+	<url>https://steamcommunity.com/id/lilwhitemouse/myworkshopfiles/?appid=294100</url>
+</ModMetaData>
