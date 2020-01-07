@@ -14,6 +14,7 @@ Current changes:
  * Smelters give off heat
  * Computers (hi-tech research benches) give off heat
  ** (maybe later they will fry if the heat gets too much)
+ * Penoxycyline now defaults to being taken every 5 days
 
 UI:
  * If you have selected a blueprint, and it gets built, you now have selected the finished item.  Huzzah!
