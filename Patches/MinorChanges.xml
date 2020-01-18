@@ -3,21 +3,33 @@
     <optionKey>smelterIsHot</optionKey>
     <success>Always</success>
     <operations>
+      <!-- Fix Smelter so it actually makes heat -->
       <li Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="ElectricSmelter"]/comps</xpath>
+        <xpath>/Defs/ThingDef[defName="ElectricSmelter"]</xpath>
+        <value><tickerType>Rare</tickerType></value>
+      </li>
+      <!-- I want it hotter - it's 700W being drawn here ;p (default is 9)-->
+      <!--   As a tickertype rare, ever 250 ticks, it will raise the temp of a
+           3x3 room by 4.6 degrees.  Granted, there's no limit, but that's still
+           kind of low.  A tiny room should be REALLY unpleasant. -->
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="ElectricSmelter"]/comps/li[@Class="CompProperties_HeatPusher"]/heatPerSecond</xpath>
         <value>
-          <li Class="CompProperties_HeatPusher">
-            <compClass>CompHeatPusherPowered</compClass><!--TODO: maybe only when being used?-->
-            <heatPerSecond>12</heatPerSecond>
-          </li>
+          <heatPerSecond>45</heatPerSecond>
         </value>
       </li>
+      <!-- Also add heat to Fueled Smelter -->
+      <!-- Note that if this fails to find the xpath, it stops the sequence patching -->
       <li Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="FueledSmelter"]/comps</xpath><!--If the mod is added-->
+        <xpath>/Defs/ThingDef[defName="FueledSmelter"]</xpath>
+        <value><tickerType>Rare</tickerType></value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="FueledSmelter"]/comps</xpath>
         <value>
           <li Class="CompProperties_HeatPusher">
             <compClass>CompHeatPusherPowered</compClass>
-            <heatPerSecond>10</heatPerSecond>
+            <heatPerSecond>27</heatPerSecond>
           </li>
         </value>
       </li>
@@ -28,24 +40,31 @@
     <success>Always</success>
     <operations>
       <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="HiTechResearchBench"]</xpath>
+        <value><tickerType>Rare</tickerType></value>
+      </li>
+      <li Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName="HiTechResearchBench"]/comps</xpath>
         <value>
           <li Class="CompProperties_HeatPusher">
             <compClass>CompHeatPusherPowered</compClass>
-            <heatPerSecond>6</heatPerSecond>
+            <heatPerSecond>3.2</heatPerSecond>
           </li>
         </value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="MultiAnalyzer"]</xpath>
+        <value><tickerType>Rare</tickerType></value>
       </li>
       <li Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName="MultiAnalyzer"]/comps</xpath>
         <value>
           <li Class="CompProperties_HeatPusher">
             <compClass>CompHeatPusherPowered</compClass>
-            <heatPerSecond>5</heatPerSecond>
+            <heatPerSecond>2.4</heatPerSecond>
           </li>
         </value>
       </li>
     </operations>
   </Operation>
-
 </Patch>
