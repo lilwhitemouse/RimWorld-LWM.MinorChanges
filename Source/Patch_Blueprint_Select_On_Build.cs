@@ -29,7 +29,7 @@ namespace LWM.MinorChanges
     //   and then use Postfix() to select the created Thing if it was.
     [HarmonyPatch(typeof(RimWorld.Blueprint), "TryReplaceWithSolidThing")]
     public static class Patch_Blueprint {
-        static bool SelectNewThing=false;
+        public static bool SelectNewThing=false;
         [HarmonyPriority(Harmony.Priority.First)]
         public static void Prefix(Blueprint __instance) {
             SelectNewThing=false;
@@ -63,14 +63,13 @@ namespace LWM.MinorChanges
     // We have to do it via Transpiler because the Thing created doesn't show up anywhere we can grab via Postfix.
     [HarmonyPatch(typeof(RimWorld.Frame), "CompleteConstruction")]
     class Patch_Frame_CompleteConstruction {
-        static bool SelectNewThing=false;
         [HarmonyPriority(Harmony.Priority.First)]
         public static void Prefix(Frame __instance) {
-            SelectNewThing=false;
+            Patch_Blueprint.SelectNewThing=false;
             if (! __instance.Spawned) return;
             //if (__instance.Map==null) return; // got to be, it's spawned?
             if (Find.Selector.SingleSelectedThing != __instance) return;
-            SelectNewThing=true;
+            Patch_Blueprint.SelectNewThing=true;
         }
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions,
                                                        ILGenerator generator) {
@@ -84,14 +83,14 @@ namespace LWM.MinorChanges
                     // Thing created by Spawn(...) is now on the stack, call HandleSelector
                     yield return new CodeInstruction(OpCodes.Call,
                                                      typeof(Patch_Frame_CompleteConstruction)
-                                                     .GetMethod("HandleSelector", BindingFlags.NonPublic
-                                                         |BindingFlags.Static));
+                                                     .GetMethod("HandleSelector", BindingFlags.Public |
+                                                                BindingFlags.Static));
                 }
             }
         }
-        static void HandleSelector(Thing t) {
-            if (!SelectNewThing) return;
-            SelectNewThing=false;
+        public static void HandleSelector(Thing t) {
+            if (!Patch_Blueprint.SelectNewThing) return;
+            Patch_Blueprint.SelectNewThing=false;
             if (t==null) return;
             Find.Selector.Select(t);
         }
