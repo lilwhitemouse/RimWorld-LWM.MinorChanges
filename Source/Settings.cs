@@ -79,7 +79,8 @@ namespace LWM.MinorChanges
                 Log.Error("LWM.MinorChanges: option \""+name+"\" is not a valid Settings boolean. Failing.");
                 return false;
             }
-            //return (bool)v.GetValue(null); // only use static, so null
+            //return (bool)v.GetValue(null); // use this line instead of the one below if you use static settings
+            //    e.g., static bool smeltherIsHot=true; //etc
             return (bool)v.GetValue(LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>());
         }
 
