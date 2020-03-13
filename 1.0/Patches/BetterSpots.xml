@@ -1,0 +1,29 @@
+<Patch>
+  <Operation Class="LWM.MinorChanges.PatchOpLWMMC">
+    <optionKey>betterSpots</optionKey>
+    <success>Always</success>
+    <operations>
+      <!-- Allow putting it in mud, water, lava, etc -->
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="MarriageSpot" or defName="PartySpot" or defName="CaravanPackingSpot" or defName="TradingSpot"]</xpath>
+        <value>
+          <terrainAffordanceNeeded Inherit="false" /><!--If you want to get married standing in water, go for it-->
+          <!-- Or in lava, for that matter -->
+        </value>
+      </li>
+      <!-- Allow placing the spots on top of other things - .e.g, get married on fancy thrones, etc
+           Note that if you try to get married inside a tree or wall, it won't work.  I dunno about
+           the other spots, but they'll probably work -->
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="MarriageSpot" or defName="PartySpot" or defName="CaravanPackingSpot" or defName="TradingSpot"]/building</xpath>
+        <value>
+          <isEdifice>false</isEdifice>
+        </value>
+      </li>
+      <!-- remove sowTag so it doesn't disrupt growing zones - get married in a cornfield?  In the middle of a rose thicket? -->
+      <li Class="PatchOperationRemove">
+        <xpath>/Defs/ThingDef[defName="MarriageSpot" or defName="PartySpot" or defName="CaravanPackingSpot" or defName="TradingSpot"]/building/sowTag</xpath>
+      </li>
+    </operations>
+  </Operation>
+</Patch>
