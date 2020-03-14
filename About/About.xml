@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
 	<name>LWM's Minor Changes</name>
-	<author>lilwhitemouse</author>
+	<author>Little White Mouse</author>
+    <packageId>LWM.MinorChanges</packageId>
 	<supportedVersions>
 		<li>1.0</li>
+        <li>1.1</li>
 	</supportedVersions>
+    <modDependencies>
+        <li>
+            <packageId>brrainz.harmony</packageId>
+            <displayName>Harmony</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+            <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+        </li>
+    </modDependencies>
+    <loadAfter>
+        <li>brrainz.harmony</li>
+    </loadAfter>
 	<description>A set of minor fixes, tweaks, and changes to the game.  While many of these ARE "fixes," they oh-so-slightly slow the game and probably don't add a whole lot more than a little realism (e.g., smelters giving off heat).  Some of them make the game slightly harder, some make the game much easier to play.  I like all of them (otherwise, I wouldn't have made them, right?)
 
 I have added mod settings that allow turning off most of the changes.  IMPORTANT NOTE: you will have to restart the game to make these changes take place.
@@ -28,5 +41,5 @@ Fixes / Improvements:
 
 
 </description>
-	<url>https://steamcommunity.com/id/lilwhitemouse/myworkshopfiles/?appid=294100</url>
+	<url>https://github.com/lilwhitemouse/RimWorld-LWM.MinorChanges</url>
 </ModMetaData>
