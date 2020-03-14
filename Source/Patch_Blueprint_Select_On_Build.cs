@@ -8,7 +8,7 @@ using Verse;
 using UnityEngine;
 using Verse.AI;
 using System.Reflection.Emit; // for OpCodes in Harmony Transpiler
-using Harmony;
+using HarmonyLib;
 
 /******************************************************
  * If the user has a blueprint or frame selected, and *
@@ -30,7 +30,7 @@ namespace LWM.MinorChanges
     [HarmonyPatch(typeof(RimWorld.Blueprint), "TryReplaceWithSolidThing")]
     public static class Patch_Blueprint {
         public static bool SelectNewThing=false;
-        [HarmonyPriority(Harmony.Priority.First)]
+        [HarmonyPriority(HarmonyLib.Priority.First)]
         public static void Prefix(Blueprint __instance) {
             SelectNewThing=false;
             if (! __instance.Spawned) return;
@@ -63,7 +63,7 @@ namespace LWM.MinorChanges
     // We have to do it via Transpiler because the Thing created doesn't show up anywhere we can grab via Postfix.
     [HarmonyPatch(typeof(RimWorld.Frame), "CompleteConstruction")]
     class Patch_Frame_CompleteConstruction {
-        [HarmonyPriority(Harmony.Priority.First)]
+        [HarmonyPriority(HarmonyLib.Priority.First)]
         public static void Prefix(Frame __instance) {
             Patch_Blueprint.SelectNewThing=false;
             if (! __instance.Spawned) return;
@@ -93,6 +93,12 @@ namespace LWM.MinorChanges
             Patch_Blueprint.SelectNewThing=false;
             if (t==null) return;
             Find.Selector.Select(t);
+        }
+        // Handle Selector above may not be called: player may have selected frame
+        //   for concrete, which is not selectable when finished.
+        // So make sure SelectNewThing is false:
+        public static void Postfix() {
+            Patch_Blueprint.SelectNewThing = false;
         }
     }
 }
