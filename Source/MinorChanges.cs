@@ -14,7 +14,7 @@ namespace LWM.MinorChanges
     [StaticConstructorOnStartup]
     public class MinorChangesModStartup {
         static MinorChangesModStartup() {
-            var harmony = Harmony.HarmonyInstance.Create("net.littlewhitemouse.RimWorld.MinorChanges");
+            var harmony = new HarmonyLib.Harmony("net.littlewhitemouse.RimWorld.MinorChanges");
             harmony.PatchAll();
         }
     }

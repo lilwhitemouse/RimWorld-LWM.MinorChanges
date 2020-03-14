@@ -53,6 +53,9 @@
     </Reference>
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
     <None Include="packages.config" />
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\RimWorld\RimWorldLinux_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MinorChanges.cs" />
