@@ -55,9 +55,11 @@
     <None Include="packages.config" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\RimWorld\RimWorldLinux_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\..\RimWorld\RimWorldLinux_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
