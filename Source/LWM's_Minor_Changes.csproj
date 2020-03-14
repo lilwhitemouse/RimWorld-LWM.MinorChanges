@@ -64,7 +64,7 @@
     <Compile Include="Patch_Blueprint_Select_On_Build.cs" />
     <Compile Include="Patch_DrugPolicy_Add_Default.cs" />
     <Compile Include="Patch_Pawn_Kill_Select_On_Die.cs" />
-    <Compile Include="Patch_RCellFinder_PartySpot.cs" />
+    <Compile Include="Patch_ValidateGatheringSpot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
