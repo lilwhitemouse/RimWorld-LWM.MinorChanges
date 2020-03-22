@@ -25,5 +25,9 @@
         <xpath>/Defs/ThingDef[defName="MarriageSpot" or defName="PartySpot" or defName="CaravanPackingSpot" or defName="TradingSpot"]/building/sowTag</xpath>
       </li>
     </operations>
+    <!-- Okay.  So the spots all have
+         building/<canPlaceOverImpassablePlant>false</canPlaceOverImpassablePlant>
+         ...I cannot find any impassable plants?  Maybe in Royalty?  Anyway, in
+         the meantime, I won't bother removing this? I guess? -->
   </Operation>
 </Patch>
