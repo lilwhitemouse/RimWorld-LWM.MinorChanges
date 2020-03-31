@@ -71,6 +71,7 @@
     <Compile Include="Patch_Pawn_Kill_Select_On_Die.cs" />
     <Compile Include="Patch_ValidateGatheringSpot.cs" />
     <Compile Include="Patch_Pawn_RelationsTracker_ShouldPawnsGetMarried.cs" />
+    <Compile Include="Patch_JobDriver_UnloadInventory_ReleaseReservationOnCarrier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

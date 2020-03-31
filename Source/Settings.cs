@@ -18,6 +18,7 @@ namespace LWM.MinorChanges
             Scribe_Values.Look(ref bigComputersAreHot, "bigComputersAreHot", true);
 
             Scribe_Values.Look(ref applyDrugDefaults, "applyDrugDefaults", true);
+            Scribe_Values.Look(ref allowMultiUnloading, "allowMultiUnloading", true);
 
             Scribe_Values.Look(ref betterSpots, "betterSpots", true);
         }
@@ -47,6 +48,11 @@ namespace LWM.MinorChanges
             r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
             Widgets.CheckboxLabeled(r, "LWMMCapplyDrugDefaults".Translate(), ref applyDrugDefaults);
             TooltipHandler.TipRegion(r, "LWMMCapplyDrugDefaultsDesc".Translate());
+            curY+=LabelHeight+1f;
+
+            r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
+            Widgets.CheckboxLabeled(r, "LWMMCallowMultiUnloading".Translate(), ref allowMultiUnloading);
+            TooltipHandler.TipRegion(r, "LWMMCallowMultiUnloadingDesc".Translate());
             curY+=LabelHeight+1f;
 
             r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
@@ -88,6 +94,7 @@ namespace LWM.MinorChanges
         bool bigComputersAreHot=true;
 
         public bool applyDrugDefaults=true;
+        public bool allowMultiUnloading=true;
 
         bool betterSpots=true;
     }
