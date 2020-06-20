@@ -12,4 +12,6 @@
   <LWMMCallowMultiUnloadingDesc>If checked, colonists will more quickly unload animals: once a hauling colonist has taken something from the pack animal (or pack-person), they will allow another colonist to come get the next thing.\n\nThis does not necessarily mean faster unloading in all cases, but in some situations it can significantly speed things up.\n\nVery lightweight change.</LWMMCallowMultiUnloadingDesc>
   <LWMMCbetterSpots>Better 'Spots.'</LWMMCbetterSpots>
   <LWMMCbetterSpotsDesc>Lets you place spots pretty much anywhere.\nWant to get married on thrones?  Sure!  In a cornfield?  Sure.  In the river?  Sure.  In the mud?  Sure.  In the lava?  Sur....okay, if you pawns cannot actually get there, then no.  This includes inside walls.  But you can put other spots inside walls and they will /probably/ work.\nSpots affected:\n  Marriage Spot\n  Party Spot\n  Caravan Packing Spot\n  Trading Spot (any mod that uses the defName TradingSpot)</LWMMCbetterSpotsDesc>
+  <LWMMCsillyThings>Add a few small silly things?</LWMMCsillyThings>
+  <LWMMCsillyThingsDesc>NOTE: you will have to restart for this to take effect!\n\nThese are small thing that should not impact gameplay to any serious amount, but are fun and amusing.</LWMMCsillyThingsDesc>
 </LanguageData>

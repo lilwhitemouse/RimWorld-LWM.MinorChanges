@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ThoughtDef>
+    <defName>LWMMCSillyLucky</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>7</stackLimit><!--duh - 7 is a lucky # around here-->
+    <stages>
+      <li>
+        <label>Such a lucky thing happened!</label>
+        <description>A rare and amazing thing happened to us!</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>LWMMCSillyLuckyPersonal</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>7</stackLimit><!--duh - 7 is a lucky # around here-->
+    <stages>
+      <li>
+        <label>Such a lucky thing happened to me!</label>
+        <description>I saw a rare and amazing thing - how wonderful!</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

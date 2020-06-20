@@ -21,6 +21,8 @@ namespace LWM.MinorChanges
             Scribe_Values.Look(ref allowMultiUnloading, "allowMultiUnloading", true);
 
             Scribe_Values.Look(ref betterSpots, "betterSpots", true);
+
+            Scribe_Values.Look(ref doSillyThings, "beSilly", false);
         }
 
         public void DoSettingsWindowContents(Rect inRect) {
@@ -60,6 +62,13 @@ namespace LWM.MinorChanges
             TooltipHandler.TipRegion(r, "LWMMCbetterSpotsDesc".Translate());
             curY+=LabelHeight+1f;
 
+            Widgets.DrawLineHorizontal(10, curY+7, rectThatHasEverything.width-10);
+            curY+=15;
+            r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
+            Widgets.CheckboxLabeled(r, "LWMMCsillyThings".Translate(), ref doSillyThings);
+            TooltipHandler.TipRegion(r, "LWMMCsillyThingsDesc".Translate());
+            curY+=LabelHeight+1f;
+
             Widgets.EndScrollView();
             totalContentHeight=curY+50f;
         }
@@ -97,5 +106,7 @@ namespace LWM.MinorChanges
         public bool allowMultiUnloading=true;
 
         bool betterSpots=true;
+
+        public bool doSillyThings=false;
     }
 }
