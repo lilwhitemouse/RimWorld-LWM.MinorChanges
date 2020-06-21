@@ -31,7 +31,7 @@ More "realism":
 
 UI:
  * If you have selected a blueprint, and it gets built, you now have selected the finished item.  Huzzah!
- * You can use . and , to select Next and Previous animals now too!
+ * You can use . and , to select Next and Previous animals now too! Works with both tame pets and wildlife.
 
 QoL / Ease of Use:
  * Penoxycyline now defaults to being taken every 5 days
@@ -41,6 +41,7 @@ Fixes / Improvements:
  * "Spots" can now be placed pretty much anywhere, including under other things.  Want to get married sitting on thrones or standing in a river?  Go for it.  Want to party around lava?  Have fun (lava not included).
  ** Party Spots may or may not work outside (they certainly don't in terrible weather), but they now work under objects...heck even under some walls.  Use discretion.
  * Multiple colonists can unload the same animal (sort of)
+ * Geothermal Plants are now walkable - this significantly changes the heat profile in certain situations, so it's turned off by default. But if you want to enclose your geoplant and your doors keep cataching on fire, this setting is for you.
 
 </description>
 	<url>https://github.com/lilwhitemouse/RimWorld-LWM.MinorChanges</url>
