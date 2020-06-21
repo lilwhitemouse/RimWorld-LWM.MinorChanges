@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModSyncNinjaData>
+  <ID>47898f5d-24c9-41bb-a013-9c8d4bfdfcae</ID>
+  <ModName>LWM's Minor Changes</ModName>
+  <Version>1.1.0.1</Version>
+  <SaveBreaking>False</SaveBreaking>
+  <Host name="Github">
+    <Owner>lilwhitemouse</Owner>
+    <Project>RimWorld-LWM.MinorChanges</Project>
+    <AboutDir>About</AboutDir>
+    <DownloadFrom>ModSyncMainPage</DownloadFrom>
+    <Branch>master</Branch>
+  </Host>
+</ModSyncNinjaData>
