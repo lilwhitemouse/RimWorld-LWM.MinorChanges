@@ -13,6 +13,11 @@ namespace LWM.MinorChanges
 {
     public class Settings : ModSettings
     {
+        // To add a setting, need 4 things:
+        //   save it here
+        //   add the variable at the bottom
+        //   put another line in DoSettignsWindows
+        //   add another language key
         public override void ExposeData() {
             Scribe_Values.Look(ref smelterIsHot, "smelterIsHot", true);
             Scribe_Values.Look(ref bigComputersAreHot, "bigComputersAreHot", true);
@@ -21,6 +26,8 @@ namespace LWM.MinorChanges
             Scribe_Values.Look(ref allowMultiUnloading, "allowMultiUnloading", true);
 
             Scribe_Values.Look(ref betterSpots, "betterSpots", true);
+
+            Scribe_Values.Look(ref geoPlantWalkable,"geoPlantWalkable", false);
 
             Scribe_Values.Look(ref doSillyThings, "beSilly", false);
         }
@@ -37,37 +44,24 @@ namespace LWM.MinorChanges
             Widgets.Label(r, "LWMMCsettingsWarning".Translate());
             curY+=LabelHeight+3f;
 
-            r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
-            Widgets.CheckboxLabeled(r, "LWMMCsmelterIsHot".Translate(), ref smelterIsHot);
-            TooltipHandler.TipRegion(r, "LWMMCsmelterIsHotDesc".Translate());
-            curY+=LabelHeight+1f;
-
-            r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
-            Widgets.CheckboxLabeled(r, "LWMMCbigComputersAreHot".Translate(), ref bigComputersAreHot);
-            TooltipHandler.TipRegion(r, "LWMMCbigComputersAreHotDesc".Translate());
-            curY+=LabelHeight+1f;
-
-            r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
-            Widgets.CheckboxLabeled(r, "LWMMCapplyDrugDefaults".Translate(), ref applyDrugDefaults);
-            TooltipHandler.TipRegion(r, "LWMMCapplyDrugDefaultsDesc".Translate());
-            curY+=LabelHeight+1f;
-
-            r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
-            Widgets.CheckboxLabeled(r, "LWMMCallowMultiUnloading".Translate(), ref allowMultiUnloading);
-            TooltipHandler.TipRegion(r, "LWMMCallowMultiUnloadingDesc".Translate());
-            curY+=LabelHeight+1f;
-
-            r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
-            Widgets.CheckboxLabeled(r, "LWMMCbetterSpots".Translate(), ref betterSpots);
-            TooltipHandler.TipRegion(r, "LWMMCbetterSpotsDesc".Translate());
-            curY+=LabelHeight+1f;
+            MakeBoolButton(ref curY, rectThatHasEverything.width,
+                           "LWMMCsmelterIsHot", ref smelterIsHot);
+            MakeBoolButton(ref curY, rectThatHasEverything.width,
+                           "LWMMCbigComputersAreHot", ref bigComputersAreHot);
+            MakeBoolButton(ref curY, rectThatHasEverything.width,
+                           "LWMMCapplyDrugDefaults", ref applyDrugDefaults);
+            MakeBoolButton(ref curY, rectThatHasEverything.width,
+                           "LWMMCallowMultiUnloading", ref allowMultiUnloading);
+            MakeBoolButton(ref curY, rectThatHasEverything.width,
+                           "LWMMCbetterSpots", ref betterSpots);
+            MakeBoolButton(ref curY, rectThatHasEverything.width,
+                           "LWMMCgeoPlantWalkable", ref geoPlantWalkable);
 
             Widgets.DrawLineHorizontal(10, curY+7, rectThatHasEverything.width-10);
             curY+=15;
-            r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
-            Widgets.CheckboxLabeled(r, "LWMMCsillyThings".Translate(), ref doSillyThings);
-            TooltipHandler.TipRegion(r, "LWMMCsillyThingsDesc".Translate());
-            curY+=LabelHeight+1f;
+
+            MakeBoolButton(ref curY, rectThatHasEverything.width,
+                           "LWMMCsillyThings", ref doSillyThings);
 
             Widgets.EndScrollView();
             totalContentHeight=curY+50f;
@@ -79,6 +73,18 @@ namespace LWM.MinorChanges
         private const float TopButtonWidth = 150f;
         private const float ScrollBarWidthMargin = 18f;
         private const float LabelHeight=22f;
+
+        // Make the button/handle the setting change:
+        void MakeBoolButton(ref float curY, float width,
+                           string labelKey, // also has Desc key
+                            ref bool setting) {
+            Rect r=new Rect(0,curY,width, LabelHeight);
+            Widgets.CheckboxLabeled(r, labelKey.Translate(), ref setting);
+            TooltipHandler.TipRegion(r, (labelKey+"Desc").Translate());
+            if (Mouse.IsOver(r)) Widgets.DrawHighlight(r);
+            curY+=LabelHeight+1f;
+        }
+
 
         // Grab a given setting given its string name:
         //   (only allow boolean results, eh?)
@@ -98,7 +104,9 @@ namespace LWM.MinorChanges
             //    e.g., static bool smeltherIsHot=true; //etc
             return (bool)v.GetValue(LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>());
         }
-
+        // Actual variables:
+        //   public ones are ones C# needs to access
+        //   private ones are ones only used for xml Patching.
         bool smelterIsHot=true;
         bool bigComputersAreHot=true;
 
@@ -106,6 +114,7 @@ namespace LWM.MinorChanges
         public bool allowMultiUnloading=true;
 
         bool betterSpots=true;
+        bool geoPlantWalkable=false;
 
         public bool doSillyThings=false;
     }
