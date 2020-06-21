@@ -31,6 +31,7 @@ More "realism":
 
 UI:
  * If you have selected a blueprint, and it gets built, you now have selected the finished item.  Huzzah!
+ * You can use . and , to select Next and Previous animals now too!
 
 QoL / Ease of Use:
  * Penoxycyline now defaults to being taken every 5 days

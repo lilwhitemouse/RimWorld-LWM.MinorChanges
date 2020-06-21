@@ -74,6 +74,7 @@
     <Compile Include="Patch_JobDriver_UnloadInventory_ReleaseReservationOnCarrier.cs" />
     <Compile Include="Patch_Designator_Dropdown-betterIcons.cs" />
     <Compile Include="Patch_Designator_PlantsCut-cutTrees.cs" />
+    <Compile Include="Patch_ThingSelectionUtility_SelectXColonist.cs" />
     <Compile Include="Silly\Patch_GenRecipe_MakeRecipeProducts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
