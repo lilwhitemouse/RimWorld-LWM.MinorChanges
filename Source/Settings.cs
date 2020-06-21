@@ -26,10 +26,11 @@ namespace LWM.MinorChanges
             Scribe_Values.Look(ref allowMultiUnloading, "allowMultiUnloading", true);
 
             Scribe_Values.Look(ref betterSpots, "betterSpots", true);
+            Scribe_Values.Look(ref selectNextAnimal, "selectNextAnimal", true);
 
             Scribe_Values.Look(ref geoPlantWalkable,"geoPlantWalkable", false);
 
-            Scribe_Values.Look(ref doSillyThings, "beSilly", false);
+            Scribe_Values.Look(ref beSilly, "beSilly", false);
         }
 
         public void DoSettingsWindowContents(Rect inRect) {
@@ -45,6 +46,10 @@ namespace LWM.MinorChanges
             curY+=LabelHeight+3f;
 
             MakeBoolButton(ref curY, rectThatHasEverything.width,
+                           "LWMMCbetterSpots", ref betterSpots);
+            MakeBoolButton(ref curY, rectThatHasEverything.width,
+                           "LWMMCselectNextAnimal", ref selectNextAnimal);
+            MakeBoolButton(ref curY, rectThatHasEverything.width,
                            "LWMMCsmelterIsHot", ref smelterIsHot);
             MakeBoolButton(ref curY, rectThatHasEverything.width,
                            "LWMMCbigComputersAreHot", ref bigComputersAreHot);
@@ -53,15 +58,13 @@ namespace LWM.MinorChanges
             MakeBoolButton(ref curY, rectThatHasEverything.width,
                            "LWMMCallowMultiUnloading", ref allowMultiUnloading);
             MakeBoolButton(ref curY, rectThatHasEverything.width,
-                           "LWMMCbetterSpots", ref betterSpots);
-            MakeBoolButton(ref curY, rectThatHasEverything.width,
                            "LWMMCgeoPlantWalkable", ref geoPlantWalkable);
 
             Widgets.DrawLineHorizontal(10, curY+7, rectThatHasEverything.width-10);
             curY+=15;
 
             MakeBoolButton(ref curY, rectThatHasEverything.width,
-                           "LWMMCsillyThings", ref doSillyThings);
+                           "LWMMCbeSilly", ref beSilly);
 
             Widgets.EndScrollView();
             totalContentHeight=curY+50f;
@@ -107,6 +110,7 @@ namespace LWM.MinorChanges
         // Actual variables:
         //   public ones are ones C# needs to access
         //   private ones are ones only used for xml Patching.
+        public bool selectNextAnimal=true;
         bool smelterIsHot=true;
         bool bigComputersAreHot=true;
 
@@ -116,6 +120,6 @@ namespace LWM.MinorChanges
         bool betterSpots=true;
         bool geoPlantWalkable=false;
 
-        public bool doSillyThings=false;
+        public bool beSilly=false; // well, slightly silly anyway
     }
 }
