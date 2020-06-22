@@ -45,69 +45,93 @@ namespace LWM.MinorChanges
             if (selThing==null) return true;
             Pawn selPawn = selThing as Pawn;
             if (selPawn==null) return true;
-            if (selPawn.Map != Find.CurrentMap) return true;
-            //if (!p.RaceProps.Animal) return true; // also get wildppl:
-            if (!selPawn.AnimalOrWildMan()) return true;
-            List<Pawn> mapAnimals;
-            if (selPawn.Faction == Faction.OfPlayer) {
-                // tamed animal!!
-                // This is trickier than I first thought for one reason:
-                //   Sorting.
-                // I want the animals to move in order as viewed in the Animals
-                // main tab window (similar to pawns in the pawn bar). It's not
-                // an easy sort to do by hand, and since I can grab it directly
-                // from the main tab window...why not?
-                // #SlightlyDeepMagic #Reflection
-
-                // The MaintabWindow_... is *the* actual window; it sticks around and one can grab it:
-                MainTabWindow_Animals mtw=(MainTabWindow_Animals)DefDatabase<MainButtonDef>.GetNamed("Animals").TabWindow;
-                // The MainTabWindow_Animals(Wildlife, etc) is a MainTabWindow_PawnTable
-                // Getting the PawnTable takes a little work:
-                var table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
-                                                                              BindingFlags.Instance |
-                                                                              BindingFlags.NonPublic |
-                                                                              BindingFlags.GetField)
-                    .GetValue(mtw as MainTabWindow_PawnTable); // because table is a ..._PawnTable var
-                if (table==null) {
-                    // If the player has never opened the Animals window, there's no table!
-                    // But we can force building the table:
-                    mtw.Notify_ResolutionChanged();
-                    table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
-                                                                              BindingFlags.Instance |
-                                                                              BindingFlags.NonPublic |
-                                                                              BindingFlags.GetField)
-                        .GetValue(mtw as MainTabWindow_PawnTable);
-                }
-                mapAnimals = table.PawnsListForReading;
-            } else {// one animal selected, but is not tame - Wildlife!
-                // grabbed straight from MainTabWindow_Wildlife:
-                MainTabWindow_Wildlife mtw=(MainTabWindow_Wildlife)DefDatabase<MainButtonDef>.GetNamed("Wildlife").TabWindow;
-                var table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
-                                                                              BindingFlags.Instance |
-                                                                              BindingFlags.NonPublic |
-                                                                              BindingFlags.GetField)
-                    .GetValue(mtw as MainTabWindow_PawnTable); // because table is a _PawnTable var
-                if (table==null) {
-                    // If the player has never opened the Wildlife window:
-                    mtw.Notify_ResolutionChanged(); // force building table
-                    table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
-                                                                              BindingFlags.Instance |
-                                                                              BindingFlags.NonPublic |
-                                                                              BindingFlags.GetField)
-                        .GetValue(mtw as MainTabWindow_PawnTable);
-                }
-                mapAnimals = table.PawnsListForReading;
+            if (selPawn.Map != Find.CurrentMap) {
+                Debug.Log("Selection: pawn "+selPawn+" is not in the same map");
+                return true;
             }
-            int index = mapAnimals.IndexOf(selPawn);
+            List<Pawn> listOfSimilarPawns;
+            //if (!p.RaceProps.Animal) return true; // also get wildppl:
+            if (!selPawn.AnimalOrWildMan()) {
+                Debug.Warning("SelectXPawn: "+selPawn+" is humanlike");
+                // human-ish
+                if (selPawn.Faction==Faction.OfPlayer) {
+                    Debug.Log("  but is player's faction.");
+                    return true;
+                }
+                if (selPawn.IsPrisoner) {
+                    Debug.Log("  and is a Prisoner");
+                    // there is no in-game list of prisoners, so we make one
+                    // and sort it how we please and use it:
+                    listOfSimilarPawns=Find.CurrentMap.mapPawns.PrisonersOfColonySpawned;
+                    // If this is not correct, we'll still default to vanilla later, so all good.
+                } else { //non player faction, non prisoner.
+                    Debug.Log("  and is a member of faction "+selPawn.Faction);
+                    // cycle through all pawns of this faction:
+                    listOfSimilarPawns=Find.CurrentMap.mapPawns.FreeHumanlikesSpawnedOfFaction(selPawn.Faction);
+                }
+            } else { //animal (or wildperson, which is counted with the animals)
+                if (selPawn.Faction == Faction.OfPlayer) {
+                    Debug.Warning("SelectXPawn: "+selPawn+" is tamed animal!");
+                    // tamed animal!!
+                    // This is trickier than I first thought for one reason:
+                    //   Sorting.
+                    // I want the animals to move in order as viewed in the Animals
+                    // main tab window (similar to pawns in the pawn bar). It's not
+                    // an easy sort to do by hand, and since I can grab it directly
+                    // from the main tab window...why not?
+                    // #SlightlyDeepMagic #Reflection
+
+                    // The MaintabWindow_... is *the* actual window; it sticks around and one can grab it:
+                    MainTabWindow_Animals mtw=(MainTabWindow_Animals)DefDatabase<MainButtonDef>.GetNamed("Animals").TabWindow;
+                    // The MainTabWindow_Animals(Wildlife, etc) is a MainTabWindow_PawnTable
+                    // Getting the PawnTable takes a little work:
+                    var table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
+                                                                                  BindingFlags.Instance |
+                                                                                  BindingFlags.NonPublic |
+                                                                                  BindingFlags.GetField)
+                        .GetValue(mtw as MainTabWindow_PawnTable); // because table is a ..._PawnTable var
+                    if (table==null) {
+                        // If the player has never opened the Animals window, there's no table!
+                        // But we can force building the table:
+                        mtw.Notify_ResolutionChanged();
+                        table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
+                                                                                  BindingFlags.Instance |
+                                                                                  BindingFlags.NonPublic |
+                                                                                  BindingFlags.GetField)
+                            .GetValue(mtw as MainTabWindow_PawnTable);
+                    }
+                    listOfSimilarPawns = table.PawnsListForReading;
+                } else {// one animal selected, but is not tame - Wildlife!
+                    Debug.Warning("SelectXPawn: "+selPawn+" is wild animal!");
+                    // grabbed straight from MainTabWindow_Wildlife:
+                    MainTabWindow_Wildlife mtw=(MainTabWindow_Wildlife)DefDatabase<MainButtonDef>.GetNamed("Wildlife").TabWindow;
+                    var table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
+                                                                                  BindingFlags.Instance |
+                                                                                  BindingFlags.NonPublic |
+                                                                                  BindingFlags.GetField)
+                        .GetValue(mtw as MainTabWindow_PawnTable); // because table is a _PawnTable var
+                    if (table==null) {
+                        // If the player has never opened the Wildlife window:
+                        mtw.Notify_ResolutionChanged(); // force building table
+                        table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
+                                                                                  BindingFlags.Instance |
+                                                                                  BindingFlags.NonPublic |
+                                                                                  BindingFlags.GetField)
+                            .GetValue(mtw as MainTabWindow_PawnTable);
+                    }
+                    listOfSimilarPawns = table.PawnsListForReading;
+                }
+            } // end else //animal
+            int index = listOfSimilarPawns.IndexOf(selPawn);
             if (index==-1) return true; // not found; who knows what went wrong
             if (goToNext) {
                 index++; // go to next, eh?
-                if (index >= mapAnimals.Count) index=0;
+                if (index >= listOfSimilarPawns.Count) index=0;
             } else {
                 index--;
-                if (index < 0) index=mapAnimals.Count-1;
+                if (index < 0) index=listOfSimilarPawns.Count-1;
             }
-            CameraJumper.TryJumpAndSelect(mapAnimals[index]);
+            CameraJumper.TryJumpAndSelect(listOfSimilarPawns[index]);
             return false;
         }
     }
