@@ -17,12 +17,16 @@ using HarmonyLib;
  * it so it works to move to the previous and next animals in *
  * either the domestic "Animals" tab or in the "Wildlife" tab *
  * as well? Let's do that!                                    *
+ * And as pointed out by ZzZombo, why not do prisoners, too?  *
+ * Heck, we can do foreign factinos by faction as well!       *
  * The sequence of events is that the player presses a hotkey *
  * and then it goes over to ThingSelectionUtility, either the *
  * SelectNextColonist() or SelectPreviousColonist(). We patch *
  * those two to add a check for whether colonist or animal is *
  * already selected and go from there.                        *
  * Of course, we have to transpile :p Actually, wait - do we? *
+ * No!  We use a Prefix call, which lets us revert to vanilla *
+ * behavior any time we want.                                 *
  *************************************************************/
 
 namespace LWM.MinorChanges
@@ -30,15 +34,15 @@ namespace LWM.MinorChanges
     [HarmonyPatch(typeof(RimWorld.ThingSelectionUtility), "SelectNextColonist")]
     static class Patch_SelectNextColonist {
         static bool Prefix() {
-            return Patch_SelectPreviousColonist.DetourToSelectXAnimal(true);
+            return Patch_SelectPreviousColonist.DetourToSelectXPawn(true);
         }
     }
     [HarmonyPatch(typeof(RimWorld.ThingSelectionUtility), "SelectPreviousColonist")]
     public static class Patch_SelectPreviousColonist {
         static bool Prefix() {
-            return DetourToSelectXAnimal(false);
+            return DetourToSelectXPawn(false);
         }
-        public static bool DetourToSelectXAnimal(bool goToNext) {
+        public static bool DetourToSelectXPawn(bool goToNext) {
             if (!LoadedModManager.GetMod<MinorChangesMod>()
                 .GetSettings<Settings>().selectNextAnimal) return true; // vanilla
             Thing selThing = Find.Selector.SingleSelectedThing;
