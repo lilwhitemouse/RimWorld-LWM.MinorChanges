@@ -86,7 +86,12 @@ namespace LWM.MinorChanges
                     // #SlightlyDeepMagic #Reflection
 
                     // The MaintabWindow_... is *the* actual window; it sticks around and one can grab it:
-                    MainTabWindow_Animals mtw=(MainTabWindow_Animals)DefDatabase<MainButtonDef>.GetNamed("Animals").TabWindow;
+                    //   use "as" to make sure it CAN be cast to MTW_A:
+                    MainTabWindow_Animals mtw=(MainTabWindow_Animals)
+                        (DefDatabase<MainButtonDef>.GetNamed("Animals").TabWindow as MainTabWindow_Animals);
+                    if (mtw == null) { Log.Message("LWM:Minor changes: could not get MainTabWindow_Animals, as it's a "+
+                                                   DefDatabase<MainButtonDef>.GetNamed("Animals").GetType().ToString());
+                        return true; } // fail gracefully.
                     // The MainTabWindow_Animals(Wildlife, etc) is a MainTabWindow_PawnTable
                     // Getting the PawnTable takes a little work:
                     var table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
@@ -108,7 +113,10 @@ namespace LWM.MinorChanges
                 } else {// one animal selected, but is not tame - Wildlife!
                     Debug.Warning("SelectXPawn: "+selPawn+" is wild animal!");
                     // grabbed straight from MainTabWindow_Wildlife:
-                    MainTabWindow_Wildlife mtw=(MainTabWindow_Wildlife)DefDatabase<MainButtonDef>.GetNamed("Wildlife").TabWindow;
+                    MainTabWindow_Wildlife mtw=(MainTabWindow_Wildlife)
+                        (DefDatabase<MainButtonDef>.GetNamed("Wildlife").TabWindow as MainTabWindow_Wildlife);
+                    if (mtw == null) { Log.Message("LWM:Minor changes: could not get MainTabWindow_Wildlife");
+                        return true; } // fail gracefully.
                     var table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
                                                                                   BindingFlags.Instance |
                                                                                   BindingFlags.NonPublic |
