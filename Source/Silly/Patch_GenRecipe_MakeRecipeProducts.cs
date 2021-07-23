@@ -22,7 +22,7 @@ namespace LWM.MinorChanges
         static bool Prepare() {
             return LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>().beSilly;
         }
-        static IEnumerable<Thing> Postfix(IEnumerable<Thing> __results, RecipeDef recipeDef, List<Thing> ingredients, Pawn worker) {
+        static IEnumerable<Thing> Postfix(IEnumerable<Thing> __result, RecipeDef recipeDef, List<Thing> ingredients, Pawn worker) {
             if (recipeDef.defName=="ButcherCorpseFlesh" && ingredients.Count==1 &&
                 ingredients[0].def.defName=="Corpse_Goose" &&
                 (ingredients[0] as Corpse).InnerPawn.gender==Gender.Female &&
@@ -45,7 +45,7 @@ namespace LWM.MinorChanges
                 // put gold first because obviously worker is excited and runs off with egg:
                 yield return ThingMaker.MakeThing(ThingDefOf.Gold);
             }
-            foreach (Thing t in __results) yield return t;
+            foreach (Thing t in __result) yield return t;
         }
 
     }
