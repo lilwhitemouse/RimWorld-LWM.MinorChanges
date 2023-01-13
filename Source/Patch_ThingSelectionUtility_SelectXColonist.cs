@@ -54,6 +54,7 @@ namespace LWM.MinorChanges
                 return true;
             }
             List<Pawn> listOfSimilarPawns;
+            // Get "civilized" humans:
             //if (!p.RaceProps.Animal) return true; // also get wildppl:
             if (!selPawn.AnimalOrWildMan()) {
                 Debug.Warning("SelectXPawn: "+selPawn+" is humanlike");
@@ -66,7 +67,10 @@ namespace LWM.MinorChanges
                     Debug.Log("  and is a Prisoner");
                     // there is no in-game list of prisoners, so we make one
                     // and sort it how we please and use it:
-                    listOfSimilarPawns=Find.CurrentMap.mapPawns.PrisonersOfColonySpawned;
+                    // Note: don't use selPawn.IsPrisonerOfColony because may be 
+                    //     a prisoner in a rescue quest
+                    listOfSimilarPawns = Find.CurrentMap.mapPawns.AllPawnsSpawned
+                               .Where(x => x.HostFaction == selPawn.HostFaction).ToList();
                     // If this is not correct, we'll still default to vanilla later, so all good.
                 } else { //non player faction, non prisoner.
                     Debug.Log("  and is a member of faction "+selPawn.Faction);
@@ -92,6 +96,7 @@ namespace LWM.MinorChanges
                     if (mtw == null) { Log.Message("LWM:Minor changes: could not get MainTabWindow_Animals, as it's a "+
                                                    DefDatabase<MainButtonDef>.GetNamed("Animals").GetType().ToString());
                         return true; } // fail gracefully.
+                    // Now want mtw.table...which is private. So we use reflection to get it:
                     // The MainTabWindow_Animals(Wildlife, etc) is a MainTabWindow_PawnTable
                     // Getting the PawnTable takes a little work:
                     var table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
@@ -103,11 +108,17 @@ namespace LWM.MinorChanges
                         // If the player has never opened the Animals window, there's no table!
                         // But we can force building the table:
                         mtw.Notify_ResolutionChanged();
+                        // try again
                         table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
                                                                                   BindingFlags.Instance |
                                                                                   BindingFlags.NonPublic |
                                                                                   BindingFlags.GetField)
                             .GetValue(mtw as MainTabWindow_PawnTable);
+                        if (table == null)
+                        {
+                            Log.Warning("LWM.MinorChanges: Could not generate Animals MainTabWindow's .table");
+                            return true;  // fail gracefully
+                        }
                     }
                     listOfSimilarPawns = table.PawnsListForReading;
                 } else {// one animal selected, but is not tame - Wildlife!
@@ -125,11 +136,17 @@ namespace LWM.MinorChanges
                     if (table==null) {
                         // If the player has never opened the Wildlife window:
                         mtw.Notify_ResolutionChanged(); // force building table
+                        // try again
                         table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
                                                                                   BindingFlags.Instance |
                                                                                   BindingFlags.NonPublic |
                                                                                   BindingFlags.GetField)
                             .GetValue(mtw as MainTabWindow_PawnTable);
+                        if (table == null)
+                        {
+                            Log.Warning("LWM.MinorChanges: Could not generate Wildlife MainTabWindow's .table");
+                            return true; // fail gracefully
+                        }
                     }
                     listOfSimilarPawns = table.PawnsListForReading;
                 }
