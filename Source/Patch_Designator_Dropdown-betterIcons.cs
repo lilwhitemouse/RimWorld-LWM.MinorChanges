@@ -18,7 +18,14 @@ using HarmonyLib;
  * that is needed to build them.
  *
  * However, that doesn't make sense for things like the
- * carpets - they all require cloth?
+ * 1.3 carpets - they all require cloth?
+ * 
+ * In 1.4, building carpets gives you a color choice, so
+ * it isn't needed there anymore. But Dubs Hygiene has a
+ * pair of ceiling fans that are both steel and are both
+ * in the same build slot (one small, one big). This mod
+ * makes it so the icon is the fan, not steel. Yes, it's
+ * a small thing, but I like it better this way!
  *
  * The thing that contains the multiple options is the
  * RimWorld.Designator_Dropdown, and it decides what icon
@@ -38,22 +45,22 @@ namespace LWM.MinorChanges
 //            return LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>().
         }
         static bool Prefix(ref ThingDef __result, Designator des) {
-            Designator_Place designator_Place = des as Designator_Place;
-			if (designator_Place != null)
-			{
-				BuildableDef placingDef = designator_Place.PlacingDef;
-                if (placingDef is ThingDef && !placingDef.MadeFromStuff) {
-                    __result=(placingDef as ThingDef);
+            if (des is Designator_Place designator_Place)
+            {
+                BuildableDef placingDef = designator_Place.PlacingDef;
+                if (placingDef is ThingDef && !placingDef.MadeFromStuff)
+                {
+                    __result = (placingDef as ThingDef);
                     return false;
                 }
                 // vanilla logic
                 if (placingDef.costList.Count > 0)
-				{
-					__result=placingDef.costList.MaxBy((ThingDefCountClass c) => c.thingDef.BaseMarketValue * (float)c.count).thingDef;
+                {
+                    __result = placingDef.costList.MaxBy((ThingDefCountClass c) => c.thingDef.BaseMarketValue * (float)c.count).thingDef;
                     return false;
-				}
-			}
-			__result= null;
+                }
+            }
+            __result = null;
             return false;
         }
     }
