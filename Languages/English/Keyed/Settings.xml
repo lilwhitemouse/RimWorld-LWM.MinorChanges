@@ -17,6 +17,8 @@
   <LWMMCselectNextAnimalDesc>The , and . (or &lt; and &gt;) keys are the default keys to move through the Colonsits. But they only applied to colonists not to animals! Well, with this setting selected, they will cycle through your tamed animals or wild animals on the map as well!</LWMMCselectNextAnimalDesc>
   <LWMMCgeoPlantWalkable>Geothermal Plants are walkable (heat control)</LWMMCgeoPlantWalkable>
   <LWMMCgeoPlantWalkableDesc>Makes it so geothermal plants are walkable - this *really* changes how heat control with geothermal plants works\nYou can totally enclose a plant in walls and build doors in the walls - and the doors won't catch fire!\nVents can be used to funnel heat where you want more easily.\nA pawn can walk over the plant to build/remove roof from the center to help control heat levels.\nDISADVANTAGE: more of the heat is spread out in the room the plant is in, so you get less useable heat in some circumstances, because the geothermal plant's room is heated. (I have considered upping the heat produced by the plant but have not done that)\n\nREQUIRES RESTART TO CHANGE</LWMMCgeoPlantWalkableDesc>
+  <LWMMCNukeFactionData>Clear Faction Data for Doors? (Real Ruins)</LWMMCNukeFactionData>
+  <LWMMCNukeFactionDataDesc>This applies to the current map and is only relevant to Real Ruins - it makes it so your colonists can actually go through the abandoned doors! I have no idea if it's safe to use anywhere else. Use when you are on a Ruins map.</LWMMCNukeFactionDataDesc>
   <LWMMCbeSilly>Add a few small silly things?</LWMMCbeSilly>
   <LWMMCbeSillyDesc>NOTE: you will have to restart for this to take effect!\n\nThese are small things that should not impact gameplay to any serious amount, but are fun and amusing.</LWMMCbeSillyDesc>
 </LanguageData>

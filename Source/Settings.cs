@@ -45,6 +45,9 @@ namespace LWM.MinorChanges
             Widgets.Label(r, "LWMMCsettingsWarning".Translate());
             curY+=LabelHeight+3f;
 
+            Widgets.Label(new Rect(0, curY, rectThatHasEverything.width, LabelHeight), 
+                 "NOT CURRENTLY WORKING:");
+            curY += LabelHeight + 3f;
             MakeBoolButton(ref curY, rectThatHasEverything.width,
                            "LWMMCbetterSpots", ref betterSpots);
             MakeBoolButton(ref curY, rectThatHasEverything.width,
@@ -66,6 +69,29 @@ namespace LWM.MinorChanges
             MakeBoolButton(ref curY, rectThatHasEverything.width,
                            "LWMMCbeSilly", ref beSilly);
 
+            Widgets.DrawLineHorizontal(10, curY + 7, rectThatHasEverything.width - 10);
+            curY += 15;
+
+            // For RealRuins
+            MakeButton(ref curY, rectThatHasEverything.width,
+                "LWMMCNukeFactionData", () =>
+                {
+                    var map = Find.CurrentMap;
+                    if (map != null)
+                    {
+                        foreach (var c in map.AllCells)
+                        {
+                            foreach (var t in c.GetThingList(map))
+                            {
+                                if (t.def?.IsEdifice() == true)
+                                {
+                                    if (t.def.CanHaveFaction) t.SetFaction(null);
+                                }
+                            }
+                        }
+                    }
+                });
+
             Widgets.EndScrollView();
             totalContentHeight=curY+50f;
         }
@@ -86,6 +112,18 @@ namespace LWM.MinorChanges
             TooltipHandler.TipRegion(r, (labelKey+"Desc").Translate());
             if (Mouse.IsOver(r)) Widgets.DrawHighlight(r);
             curY+=LabelHeight+1f;
+        }
+
+        void MakeButton(ref float curY, float width, string labelKey, Action action)
+        {
+            Rect r = new Rect(10, curY, width - 20, LabelHeight);
+            if (Widgets.ButtonText(r, labelKey.Translate(), true, false))
+            {
+                action();
+            }
+            TooltipHandler.TipRegion(r, (labelKey + "Desc").Translate());
+            if (Mouse.IsOver(r)) Widgets.DrawHighlight(r);
+            curY += LabelHeight + 1f;
         }
 
 
