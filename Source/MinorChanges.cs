@@ -22,14 +22,13 @@ namespace LWM.MinorChanges
         public MinorChangesMod(ModContentPack content) : base(content) {
 
         }
-        public override string SettingsCategory() => "LWM's Minor Changes"; // todo: translate?
+        public override string SettingsCategory() => "LWM_Minor_Changes".Translate();
 
         public override void DoSettingsWindowContents(Rect inRect) {
             GetSettings<Settings>().DoSettingsWindowContents(inRect);
         }
-
     }
-    internal class Debug
+    internal static class Debug
     {
         [Conditional("DEBUG")]
         internal static void Log(string s)
