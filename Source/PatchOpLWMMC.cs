@@ -9,6 +9,7 @@ using UnityEngine;
 using Verse.AI;
 using System.Diagnostics;
 
+// A little Patch Operation that lets me patch things based on a mod setting
 namespace LWM.MinorChanges
 {
   public class PatchOpLWMMC : PatchOperationSequence

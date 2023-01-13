@@ -97,6 +97,7 @@ namespace LWM.MinorChanges
         static void CheckIfShouldStartWedding(Pawn p1, Pawn p2) {
             // The dialog window is modeled after RW.IncidentWorker_CaravanDemand
             //   (caravan ambushed, demand XYZ, give and leave, refuse and fight, etc)
+            // TODO -translate this, eh?
             DiaNode diaNode = new DiaNode(""+p1+" and "+p2+" want to get married - is today the day?");
             DiaOption optionYes=new DiaOption("\"Ding dang dong\" go the wedding bells!");
             optionYes.action=delegate() {

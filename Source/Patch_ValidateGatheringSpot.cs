@@ -16,7 +16,10 @@ using HarmonyLib;
  * instead of Standable...actually, I will allow    *
  * whatever.  At players own risk ;p                *
  ****************************************************/
-
+//NOTE: This may not work with Royalty - the investiture ceremonies
+//      make the Empire person walk over to a ...Party Spot?
+//      Certainly, more research is required before letting this one go! TODO
+//      NOTE: TODO: XML changse will be required
 namespace LWM.MinorChanges
 {
     /* RCellFinder.TryFindGatheringSpot checks for valid gathering spots

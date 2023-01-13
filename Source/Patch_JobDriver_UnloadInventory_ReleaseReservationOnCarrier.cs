@@ -43,8 +43,11 @@ namespace LWM.MinorChanges
         }
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions,
                                                        ILGenerator generator) {
+            // We are looking for the anonymous delegate for the .initAction for the toil
+            //    that grabs the actual item.  Luckily, there's only one, so it's easyish
+            //    to find: <MakeNewToils>b__7_0. The name is even the same in 1.4 :)
             // <MakeNewToils>b__7_0 doesn't have an anonymous object assosciated with it, so
-            // that makes things easy.  Arg0 is the JobDriver_UnloadInventory!
+            // that makes things easy.  Arg0 is the JobDriver_UnloadInventory
             // Our simple solution:  Before the rest of the toil does any work,
             // Release The Muffalos!
             // Or at least any we have reserved for this job:
@@ -60,5 +63,6 @@ namespace LWM.MinorChanges
             //            but I choose not to.
             driver.pawn.ClearReservationsForJob(driver.pawn.CurJob);
         }
+        // NOTE: ...why didn't I just do a Prefix(JobDriver_UnloadInventory __instance)?
     }
 }
