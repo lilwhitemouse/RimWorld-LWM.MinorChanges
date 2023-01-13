@@ -66,6 +66,7 @@
     <None Include="packages.config" />
     <Reference Include="UnityEngine.TextRenderingModule">
       <HintPath>..\..\RimWorld\RimWorldLinux_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
