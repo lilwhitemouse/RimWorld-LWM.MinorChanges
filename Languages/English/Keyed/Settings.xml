@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+  <LWM_Minor_Changes>LWM's Minor Changes</LWM_Minor_Changes>
   <!-- Language data for the Mod Settings (see Settings.cs) -->
   <LWMMCsettingsWarning>IMPORTANT REMINDER: you MUST restart the game for changes to take effect</LWMMCsettingsWarning>
   <LWMMCsmelterIsHot>Smelter gives off heat</LWMMCsmelterIsHot>
@@ -11,7 +12,7 @@
   <LWMMCallowMultiUnloading>Allow multilpe colonist Unloading</LWMMCallowMultiUnloading>
   <LWMMCallowMultiUnloadingDesc>If checked, colonists will more quickly unload animals: once a hauling colonist has taken something from the pack animal (or pack-person), they will allow another colonist to come get the next thing.\n\nThis does not necessarily mean faster unloading in all cases, but in some situations it can significantly speed things up.\n\nVery lightweight change.\n\nRequires Restart to change!</LWMMCallowMultiUnloadingDesc>
   <LWMMCbetterSpots>Better 'Spots.'</LWMMCbetterSpots>
-  <LWMMCbetterSpotsDesc>Lets you place spots pretty much anywhere.\nWant to get married on thrones?  Sure!  In a cornfield?  Sure.  In the river?  Sure.  In the mud?  Sure.  In the lava?  Sur....okay, if you pawns cannot actually get there, then no.  This includes inside walls.  But you can put other spots inside walls and they will /probably/ work.\nSpots affected:\n  Marriage Spot\n  Party Spot\n  Caravan Packing Spot\n  Trading Spot (any mod that uses the defName TradingSpot)\n\nRequires Restart to change!</LWMMCbetterSpotsDesc>
+  <LWMMCbetterSpotsDesc>Lets you place spots pretty much anywhere.\nWant to get married on thrones?  Sure!  In a cornfield?  Sure.  In the river?  Sure.  In the mud?  Sure.  In the lava?  Sur....okay, if you pawns cannot actually get there, then no.  This includes inside walls.  But you can put other spots inside walls and they will /probably/ work. Royalty Investitures might not; who knows.\nSpots affected:\n  Marriage Spot\n  Party Spot\n  Caravan Packing Spot\n  Trading Spot (any mod that uses the defName TradingSpot)\n\nRequires Restart to change!</LWMMCbetterSpotsDesc>
   <LWMMCselectNextAnimal>Use , and . hotkeys to move thru Animals too?</LWMMCselectNextAnimal>
   <LWMMCselectNextAnimalDesc>The , and . (or &lt; and &gt;) keys are the default keys to move through the Colonsits. But they only applied to colonists not to animals! Well, with this setting selected, they will cycle through your tamed animals or wild animals on the map as well!</LWMMCselectNextAnimalDesc>
   <LWMMCgeoPlantWalkable>Geothermal Plants are walkable (heat control)</LWMMCgeoPlantWalkable>
