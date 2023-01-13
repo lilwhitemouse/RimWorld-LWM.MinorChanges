@@ -51,9 +51,7 @@ namespace LWM.MinorChanges
             // I hard code these values here.  I'm sure there's a slicker way to do this using XML etc.
             // But this is way easier and it does what *I* need, at any rate.
             if (dp.drug.defName=="Penoxycyline") {
-                if (ModLister.HasActiveModWithName("Stronger Penoxycyline (1.0)") ||
-                    // As of version 1.0, I hate mod names with versions :p  Anyway:
-                    ModLister.HasActiveModWithName("Stronger Penoxycyline (1.1)")) {
+                if (ModLister.HasActiveModWithName("Stronger Penoxycyline (1.4)")) {
                     dp.daysFrequency=30f; // one season apparently
                 } else
                     dp.daysFrequency=5f; // vanilla
