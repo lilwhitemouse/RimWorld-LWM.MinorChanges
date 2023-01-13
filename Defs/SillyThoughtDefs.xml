@@ -2,7 +2,7 @@
 <Defs>
   <ThoughtDef>
     <defName>LWMMCSillyLucky</defName>
-    <durationDays>1</durationDays>
+    <durationDays>7</durationDays>
     <stackLimit>7</stackLimit><!--duh - 7 is a lucky # around here-->
     <stages>
       <li>
@@ -14,7 +14,7 @@
   </ThoughtDef>
   <ThoughtDef>
     <defName>LWMMCSillyLuckyPersonal</defName>
-    <durationDays>1</durationDays>
+    <durationDays>7</durationDays>
     <stackLimit>7</stackLimit><!--duh - 7 is a lucky # around here-->
     <stages>
       <li>
