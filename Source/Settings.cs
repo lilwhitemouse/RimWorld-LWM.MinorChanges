@@ -30,6 +30,8 @@ namespace LWM.MinorChanges
 
             Scribe_Values.Look(ref geoPlantWalkable,"geoPlantWalkable", false);
 
+            Scribe_Values.Look(ref bloodfeedOnPeopleWhoWant, "bloodfeedOnPeopleWhoWant", false);
+
             Scribe_Values.Look(ref beSilly, "beSilly", false);
         }
 
@@ -62,6 +64,8 @@ namespace LWM.MinorChanges
                            "LWMMCallowMultiUnloading", ref allowMultiUnloading);
             MakeBoolButton(ref curY, rectThatHasEverything.width,
                            "LWMMCgeoPlantWalkable", ref geoPlantWalkable);
+            MakeBoolButton(ref curY, rectThatHasEverything.width,
+                           "LWMMCbloodfeedOnPeopleWhoWant", ref bloodfeedOnPeopleWhoWant);
 
             Widgets.DrawLineHorizontal(10, curY+7, rectThatHasEverything.width-10);
             curY+=15;
@@ -157,6 +161,8 @@ namespace LWM.MinorChanges
 
         bool betterSpots=true;
         bool geoPlantWalkable=false;
+
+        public bool bloodfeedOnPeopleWhoWant=false;
 
         public bool beSilly=false; // well, slightly silly anyway
     }
