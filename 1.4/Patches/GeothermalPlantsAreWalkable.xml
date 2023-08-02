@@ -1,0 +1,20 @@
+<Patch>
+  <Operation Class="LWM.MinorChanges.PatchOpLWMMC">
+    <optionKey>geoPlantWalkable</optionKey>
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="GeothermalGenerator"]</xpath>
+        <value>
+          <pathCost>300</pathCost><!--very very slow to walk thru-->
+        </value>
+      </li>
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="GeothermalGenerator"]/passability</xpath>
+        <value>
+          <passability>PassThroughOnly</passability>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+</Patch>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <LWMMC_TimeLeftLabel>{0} ({1} left)</LWMMC_TimeLeftLabel><!-- e.g., Solar Pinhole (10 hours left) -->
+</LanguageData>

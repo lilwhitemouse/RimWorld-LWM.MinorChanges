@@ -1,0 +1,38 @@
+<Patch>
+  <Operation Class="LWM.MinorChanges.PatchOpLWMMC">
+    <optionKey>betterSolarPinholes</optionKey>
+    <success>Always</success>
+    <operations>
+      <!-- Change everything with EtherealThingBase and CompProperties_DestroyAfterDelay to use
+             LWM.MinorChanges.CompProperties_DestroyAfterDelay_WithLabel -->
+      <li Class="PatchOperationAttributeSet">
+        <xpath>/Defs/ThingDef[@ParentName="EtherealThingBase"]/comps/li[@Class="CompProperties_DestroyAfterDelay"]</xpath>
+        <attribute>Class</attribute>
+        <value>LWM.MinorChanges.CompProperties_DestroyAfterDelay_WithLabel</value>
+      </li>
+      <!-- Fancy Pinhole job stuff -->
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/AbilityDef[defName="SolarPinhole"]</xpath>
+        <value><jobDef>LWM_MC_CastAbilityGoTo_Distance</jobDef>
+               <displayGizmoWhileUndrafted>True</displayGizmoWhileUndrafted>
+               <disableGizmoWhileUndrafted>False</disableGizmoWhileUndrafted>
+        </value>
+      </li>
+<!--      <li Class="PatchOperationAdd">
+	<xpath>/Defs/AbilityDef[defName="SolarPinhole"]/verbProperties</xpath>
+	<value><verbClass Inherit="False">LWM.MinorChanges.Verb_CastPsycast_GoTo</verbClass></value>
+      </li>-->
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs</xpath>
+        <value><JobDef Name="LWM_MC_CastAbilityGoTo_Distance">
+               <defName>LWM_MC_CastAbilityGoTo_Distance</defName>
+	       <driverClass>LWM.MinorChanges.JobDriver_CastAbilityGoTo_Distance</driverClass>
+	       <casualInterruptible>false</casualInterruptible>
+	       <collideWithPawns>true</collideWithPawns>
+	       <neverShowWeapon>true</neverShowWeapon>
+               </JobDef>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+</Patch>

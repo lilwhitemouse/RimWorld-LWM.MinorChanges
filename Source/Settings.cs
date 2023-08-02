@@ -31,6 +31,7 @@ namespace LWM.MinorChanges
             Scribe_Values.Look(ref geoPlantWalkable,"geoPlantWalkable", false);
 
             Scribe_Values.Look(ref bloodfeedOnPeopleWhoWant, "bloodfeedOnPeopleWhoWant", false);
+            Scribe_Values.Look(ref betterSolarPinholes, "betterSolarPinholes", true);
 
             Scribe_Values.Look(ref beSilly, "beSilly", false);
         }
@@ -66,6 +67,8 @@ namespace LWM.MinorChanges
                            "LWMMCgeoPlantWalkable", ref geoPlantWalkable);
             MakeBoolButton(ref curY, rectThatHasEverything.width,
                            "LWMMCbloodfeedOnPeopleWhoWant", ref bloodfeedOnPeopleWhoWant);
+            MakeBoolButton(ref curY, rectThatHasEverything.width,
+                           "LWMMCbetterSolarPinholes", ref betterSolarPinholes);
 
             Widgets.DrawLineHorizontal(10, curY+7, rectThatHasEverything.width-10);
             curY+=15;
@@ -136,6 +139,7 @@ namespace LWM.MinorChanges
         public static bool IsOptionSet(string name) {
             //var v = typeof(LWM.MinorChanges.Settings).GetField(name);
             var v = typeof(LWM.MinorChanges.Settings).GetField(name, System.Reflection.BindingFlags.NonPublic |
+                System.Reflection.BindingFlags.Public | // Heh, can't forget this, right?
                 System.Reflection.BindingFlags.GetField|System.Reflection.BindingFlags.Instance);
             if (v==null) {
                 Log.Error("LWM.MinorChanges: option \""+name+"\" is not a valid Settings variable. Failing.");
@@ -161,6 +165,7 @@ namespace LWM.MinorChanges
 
         bool betterSpots=true;
         bool geoPlantWalkable=false;
+        public bool betterSolarPinholes = true;
 
         public bool bloodfeedOnPeopleWhoWant=false;
 
