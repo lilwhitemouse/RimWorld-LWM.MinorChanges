@@ -86,6 +86,7 @@ namespace LWM.MinorChanges
             toil.initAction = delegate ()
                 {
                     this.pawn.pather.StopDead();
+                    if (this.pawn.CurJob.GetTarget(ind).HasThing) this.FailOnDespawnedNullOrForbidden(ind);
                 }
                 + toil.initAction;
             toil.defaultCompleteMode = ToilCompleteMode.Instant;
@@ -98,6 +99,7 @@ namespace LWM.MinorChanges
             toil.initAction = delegate {
                 Debug.Warning("CastAbilityGoTo_Distance: " + toil.actor + " is starting from " + toil.actor.Position);
                 previousPosition = toil.actor.Position;
+                if (this.pawn.CurJob.GetTarget(ind).HasThing) this.FailOnDespawnedNullOrForbidden(ind);
                 //Log.Error("InitAction setting previousPosition to " + previousPosition);
             }+toil.initAction;
             toil.tickAction += delegate {
