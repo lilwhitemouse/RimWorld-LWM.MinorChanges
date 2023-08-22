@@ -13,12 +13,54 @@ namespace LWM.MinorChanges
 {
     public class Settings : ModSettings
     {
+        /* This is set up with a bunch of "keys" that are basically boolean variables.
+         * Dealing with actual variables was a pain - I had to do every step for every
+         * new setting I added. Boring! Now adding a new setting involves three things
+         *   1. Put the key name in the list (e.g., "newSettingName")
+         *   2. Create language keys for the setting: (<LWMMCnewSettingName/> and <LWMMCnewSettingNameDesc/>)
+         *   3. Use the key
+         *        in the code via `if (Settings.IsOptionSet("newSettingName"))...`
+         *        in the XML patching via   <Operation Class="LWM.MinorChanges.PatchOpLWMMC"><!--like Sequence-->
+                                               <optionKey>newSettingName</optionKey>
+         */                                              
+        
+        readonly static string[] ListOfOptionalSettings = // Default to false
+        {
+            "easierCasting",
+
+        };
+        readonly static string[] ListOfProbablyYes =      // Default to true
+        {
+            "betterPinholes",
+            "donotBreastfeedInBathrooms",
+            "showMeditationTypesWhenAssigningThrones",
+        };
+        readonly static string[] ListOfNotQuiteWorkingRight = // Default to False and also get warning in settings
+        {
+
+        };
+        Dictionary<string, bool> OptionalSettings = ListOfOptionalSettings.ToDictionary(k=>k, k => false);
+        Dictionary<string, bool> ProbablyYes = ListOfProbablyYes.ToDictionary(k => k, k => true);
+        Dictionary<string, bool> NotQuiteWorkingRight = ListOfNotQuiteWorkingRight.ToDictionary(k => k, v => false);
+        /* <rant> Seriously, C#, what the heck?? I can't explictly write a dictionary with elements like this?
+           Dictionary<string, bool> OptionalSettings = new Dictionary<string, bool>()
+           {
+               "easierCasting" => false, // WTF? We can't do this??
+               { "easierCasting", false }, // We have to do THIS??
+           };
+           Do better, C#. Do better.
+           </rant>*/
+        // Old way of doing this:
         // To add a setting, need 4 things:
         //   save it here
         //   add the variable at the bottom
         //   put another line in DoSettignsWindows
         //   add another language key
         public override void ExposeData() {
+            ExposeDictionary(OptionalSettings, false);
+            ExposeDictionary(ProbablyYes, true);
+            ExposeDictionary(NotQuiteWorkingRight, false);
+
             Scribe_Values.Look(ref smelterIsHot, "smelterIsHot", true);
             Scribe_Values.Look(ref bigComputersAreHot, "bigComputersAreHot", true);
 
@@ -31,9 +73,17 @@ namespace LWM.MinorChanges
             Scribe_Values.Look(ref geoPlantWalkable,"geoPlantWalkable", false);
 
             Scribe_Values.Look(ref bloodfeedOnPeopleWhoWant, "bloodfeedOnPeopleWhoWant", false);
-            Scribe_Values.Look(ref betterSolarPinholes, "betterSolarPinholes", true);
 
             Scribe_Values.Look(ref beSilly, "beSilly", false);
+        }
+        void ExposeDictionary(Dictionary<string, bool> dict, bool defaultVal)
+        {
+            foreach (var key in dict.Keys.ToList())
+            {
+                bool tmpVal = dict[key];
+                Scribe_Values.Look(ref tmpVal, key, defaultVal);
+                dict[key] = tmpVal;
+            }
         }
 
         public void DoSettingsWindowContents(Rect inRect) {
@@ -48,11 +98,17 @@ namespace LWM.MinorChanges
             Widgets.Label(r, "LWMMCsettingsWarning".Translate());
             curY+=LabelHeight+3f;
 
+            MakeDictBoolButtons(ref curY, rectThatHasEverything.width, OptionalSettings);
+            // TODO: Some label here
+            MakeDictBoolButtons(ref curY, rectThatHasEverything.width, ProbablyYes);
             Widgets.Label(new Rect(0, curY, rectThatHasEverything.width, LabelHeight), 
                  "NOT CURRENTLY WORKING:");
             curY += LabelHeight + 3f;
             MakeBoolButton(ref curY, rectThatHasEverything.width,
                            "LWMMCbetterSpots", ref betterSpots);
+            // TODO: label above should go here?
+            MakeDictBoolButtons(ref curY, rectThatHasEverything.width, NotQuiteWorkingRight);
+
             MakeBoolButton(ref curY, rectThatHasEverything.width,
                            "LWMMCselectNextAnimal", ref selectNextAnimal);
             MakeBoolButton(ref curY, rectThatHasEverything.width,
@@ -67,8 +123,6 @@ namespace LWM.MinorChanges
                            "LWMMCgeoPlantWalkable", ref geoPlantWalkable);
             MakeBoolButton(ref curY, rectThatHasEverything.width,
                            "LWMMCbloodfeedOnPeopleWhoWant", ref bloodfeedOnPeopleWhoWant);
-            MakeBoolButton(ref curY, rectThatHasEverything.width,
-                           "LWMMCbetterSolarPinholes", ref betterSolarPinholes);
 
             Widgets.DrawLineHorizontal(10, curY+7, rectThatHasEverything.width-10);
             curY+=15;
@@ -90,7 +144,7 @@ namespace LWM.MinorChanges
                         {
                             foreach (var t in c.GetThingList(map))
                             {
-                                if (t.def?.IsEdifice() == true)
+                                if (t.def?.IsDoor == true) // .IsEdiface() is also a possible choice, but I think this better
                                 {
                                     if (t.def.CanHaveFaction) t.SetFaction(null);
                                 }
@@ -109,6 +163,15 @@ namespace LWM.MinorChanges
         private const float TopButtonWidth = 150f;
         private const float ScrollBarWidthMargin = 18f;
         private const float LabelHeight=22f;
+
+        void MakeDictBoolButtons(ref float curY, float width, Dictionary<string, bool> dict)
+        {
+            foreach (var k in dict.Keys.ToList()) {
+                bool tmpVal = dict[k];
+                MakeBoolButton(ref curY, width, "LWMMC" + k, ref tmpVal);
+                if (tmpVal != dict[k]) dict[k] = tmpVal;
+            }
+        }
 
         // Make the button/handle the setting change:
         void MakeBoolButton(ref float curY, float width,
@@ -137,6 +200,11 @@ namespace LWM.MinorChanges
         // Grab a given setting given its string name:
         //   (only allow boolean results, eh?)
         public static bool IsOptionSet(string name) {
+            var s = LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>();
+            bool x;
+            if (s.OptionalSettings.TryGetValue(name, out x)) return x;
+            if (s.ProbablyYes.TryGetValue(name, out x)) return x;
+            if (s.NotQuiteWorkingRight.TryGetValue(name, out x)) return x;
             //var v = typeof(LWM.MinorChanges.Settings).GetField(name);
             var v = typeof(LWM.MinorChanges.Settings).GetField(name, System.Reflection.BindingFlags.NonPublic |
                 System.Reflection.BindingFlags.Public | // Heh, can't forget this, right?
@@ -151,7 +219,7 @@ namespace LWM.MinorChanges
             }
             //return (bool)v.GetValue(null); // use this line instead of the one below if you use static settings
             //    e.g., static bool smeltherIsHot=true; //etc
-            return (bool)v.GetValue(LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>());
+            return (bool)v.GetValue(s);
         }
         // Actual variables:
         //   public ones are ones C# needs to access
@@ -165,7 +233,6 @@ namespace LWM.MinorChanges
 
         bool betterSpots=true;
         bool geoPlantWalkable=false;
-        public bool betterSolarPinholes = true;
 
         public bool bloodfeedOnPeopleWhoWant=false;
 

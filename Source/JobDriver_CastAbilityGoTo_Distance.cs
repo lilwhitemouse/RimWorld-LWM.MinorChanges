@@ -32,9 +32,129 @@ namespace LWM.MinorChanges
      *          wanted defs via XML PatchOperations
      * 
      *  Note 4: For the record, the vanilla behavior is dumb sometimes, but whatevs...
-     */    
+     */
+    [StaticConstructorOnStartup]
     public class JobDriver_CastAbilityGoTo_Distance : JobDriver_CastAbilityGoTo
     {
+        public static JobDef jobDef;
+        static JobDriver_CastAbilityGoTo_Distance()
+        {
+            // Controlled by key "easierCasting" via existance of the necessary JobDef added by xml
+            jobDef = DefDatabase<JobDef>.GetNamed("LWM_MC_CastAbilityGoTo_Distance", false);
+            if (jobDef == null) {
+                LWM.MinorChanges.Debug.Error("LWM, your CastAbility JobDefs are off! Are you all right?");
+                return;
+            }
+            LWM.MinorChanges.Debug.Warning("Adding custom JobDefs to all ranged castabilities...");
+            // So SolarPinhole and many many other casting abilities have a jobDef of null...
+            //   This isn't a mistake; the job gets chosen elsewhere. If the ability has
+            //   targetWorldCell, then Command_Ability calls the ability's QueueCastingJob, 
+            //   which only seems to be used if it's a world targeting ability??
+            //   Otherwise, the Targeter makes the job using JobDefOf.UseVerbOnThing, which
+            //   uses JobDriver_CastVerbOnce.
+            //   We don't want to f--- with world targeting abilities like Farskip (because...
+            //   it doesn't work, and having your cornered pawns unable to farskip home can be
+            //   a bit...aaaack!), so we remove those from our patching:
+            List<string> defNames = new List<string>();
+            foreach (var d in DefDatabase<AbilityDef>.AllDefsListForReading
+                        .Where(d=>d.jobDef == null && d.targetWorldCell == false)
+                        .Where(d=>d.verbProperties.range > 0f).Where(d=>d.hostile==false))
+            {
+                Debug.Log("  --Patching " + d.defName);
+                defNames.Add(d.defName);
+                d.jobDef = jobDef;
+                d.displayGizmoWhileUndrafted = true;
+                d.disableGizmoWhileUndrafted = false;
+            }
+            Log.Message("LWM.MinorChanges: Better Ability Casting option has triggered for: " + String.Join(", ", defNames));
+        }
+        protected override IEnumerable<Toil> MakeNewToils()
+        {
+            Toil goToLocation = GoTowardsPositionUntilCanCast(TargetIndex.A, PathEndMode.Touch, this.job.ability);
+            Toil castTheSpell = CastWithLog(TargetIndex.A, TargetIndex.A, false);
+            Toil startWholeThing = InitiateCasting(TargetIndex.A, castTheSpell, this.job.ability);
+            yield return startWholeThing;
+            yield return goToLocation;
+            yield return castTheSpell;
+            yield break;
+            //yield return Toils_Combat.CastVerb(TargetIndex.A, TargetIndex.A, false);
+        }
+        Toil InitiateCasting(TargetIndex ind, Toil toilIfReadyToCast, Ability ability)
+        {
+            Toil toil = Toils_Jump.JumpIf(toilIfReadyToCast,
+                () => ability.verb.CanHitTargetFrom(this.pawn.Position, this.pawn.CurJob.GetTarget(ind)));
+            toil.initAction = delegate ()
+                {
+                    this.pawn.pather.StopDead();
+                }
+                + toil.initAction;
+            toil.defaultCompleteMode = ToilCompleteMode.Instant;
+            return toil;
+        }
+        Toil GoTowardsPositionUntilCanCast(TargetIndex ind, PathEndMode peMode, Ability ability)
+        {
+            Toil toil = Toils_Goto.GotoCell(ind, peMode);
+            IntVec3 previousPosition = IntVec3.Invalid;
+            toil.initAction = delegate {
+                Debug.Warning("CastAbilityGoTo_Distance: " + toil.actor + " is starting from " + toil.actor.Position);
+                previousPosition = toil.actor.Position;
+                //Log.Error("InitAction setting previousPosition to " + previousPosition);
+            }+toil.initAction;
+            toil.tickAction += delegate {
+                if (toil.actor.Position != previousPosition)
+                {
+                    Debug.Log("CastAbilityGoTo_Distance: " + toil.actor + " has moved to " + toil.actor.Position);
+                    previousPosition = toil.actor.Position;
+                    //Log.Message("Have moved to " + previousPosition);
+                    // This won't work: if (ability.verb.CanHitTarget(toil.actor.CurJob.GetTarget(ind)))
+                    //   because we've already patched CanHitTarget.  :facepalm:
+                    // But this should be sufficient:
+                    if ((((Verb)ability.verb) as Verb).CanHitTargetFrom(toil.actor.Position, toil.actor.CurJob.GetTarget(ind)))
+                    {
+                        Debug.Warning("CastAbilityGoTo_Distance: " + toil.actor + " can cast " + ability.def.defName);
+                        if (toil.actor.Position.Standable(toil.actor.Map))
+                        {
+                            Debug.Log("Finishing pathing to stand on the cell");
+                            toil.actor.pather.StartPath(toil.actor.Position, PathEndMode.OnCell);
+                        }
+                        else
+                        {
+                            Debug.Log("Starting casting!");
+                            toil.actor.jobs.curDriver.ReadyForNextToil();
+                        }
+                    }
+                }
+            };
+            return toil;
+        }
+        // This exists just so I can get debugging info if needed
+        Toil CastWithLog(TargetIndex ind1, TargetIndex ind2, bool someBool)
+        {
+            var t = Toils_Combat.CastVerb(ind1, ind2, someBool);
+            t.initAction = (Action)delegate {
+                Debug.Warning("CastAbilityGotoDistance: " + t.actor + " is starting to cast "+
+                              ((t.actor.CurJob.verbToUse is Verb_CastPsycast vcp) ? vcp.ability.def.defName : "something!"));            
+            }+t.initAction;
+            return t;
+        }
+//Worse approaches:
+#if false
+        Toil XGoTowardsPositionUntilCanCast(TargetIndex ind, PathEndMode peMode, Ability ability)
+        {
+            Toil toil = ToilMaker.MakeToil("GoTowardsPositionUntilCanCast");
+            toil.initAction = delegate
+            {
+                Pawn actor = toil.actor;
+                Job curJob = actor.jobs.curJob;
+                Log.Message("Casting pawn " + actor + " is starting to path to " + actor.jobs.curJob.GetTarget(ind));
+                actor.pather.StartPath(actor.jobs.curJob.GetTarget(ind), peMode);
+
+            };
+            toil.defaultCompleteMode = ToilCompleteMode.PatherArrival;
+            return toil;
+        }
+#endif
+#if false // Dear gods of the ether, vanilla pathfinding to cast is actually really dumb. REALLY REALLY dumb.
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedOrNull(TargetIndex.A);
@@ -83,10 +203,10 @@ namespace LWM.MinorChanges
             yield return Toils_Combat.CastVerb(TargetIndex.A, TargetIndex.B, false);
             yield break;
         }
-
-// Original thought to make this work:
-//   Turns out there are too many tricky irritating places the engine needs a real Thing to make it
-//   easy to work around. I think the temporary fake Thing is the way to go
+#endif
+        // Original thought to make this work:
+        //   Turns out there are too many tricky irritating places the engine needs a real Thing to make it
+        //   easy to work around. I think the temporary fake Thing is the way to go
 #if false
         private static Toil GotoUntilCanUseAbility(TargetIndex ind, PathEndMode peMode, Ability ability)
         {
@@ -161,6 +281,6 @@ namespace LWM.MinorChanges
             //Log.Message("Have new toil! Starting with location "+currentLocation);
             return toil;
         }
-        #endif
+#endif
     }
 }

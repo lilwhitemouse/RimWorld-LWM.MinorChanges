@@ -4,6 +4,11 @@ using Verse;
 
 namespace LWM.MinorChanges
 {
+  /* An extension that provides a bit more information for the label than just "def.label" - 
+   * sometimes it's very useful to know how long before the Destroy kicks in!
+   * For example: Solar Pinhole
+   * (patched in via XML: SolarPinholesAndThingsThatBurnOutSaySo)  
+   */
   public class CompDestroyAfterDelayWithLabel : CompDestroyAfterDelay
   {
     public override string TransformLabel(string label)
