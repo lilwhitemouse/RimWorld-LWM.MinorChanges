@@ -89,6 +89,7 @@
     <Compile Include="Debugging.cs" />
     <Compile Include="Patch_Blueprint_Build_Gizmo.cs" />
 -->
+    <Compile Include="Silly\Patch_GenRecipe_MakeRecipeProducts.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
