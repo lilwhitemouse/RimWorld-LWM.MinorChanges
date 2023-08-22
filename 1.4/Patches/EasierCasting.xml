@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <Operation Class="LWM.MinorChanges.PatchOpLWMMC">
+    <optionKey>easierCasting</optionKey>
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs</xpath>
+        <value><JobDef Name="LWM_MC_CastAbilityGoTo_Distance">
+               <defName>LWM_MC_CastAbilityGoTo_Distance</defName>
+	       <driverClass>LWM.MinorChanges.JobDriver_CastAbilityGoTo_Distance</driverClass>
+	       <casualInterruptible>false</casualInterruptible>
+	       <!-- Oi...I don't know whether it should collideWithPawns - if this is true, then pawns
+                    in combat can't get past someone in front of them to cast, and I think that is oh-
+                    so-slightly more annoying than being able to slide by? -->
+	       <!--<collideWithPawns>true</collideWithPawns>-->
+	       <neverShowWeapon>true</neverShowWeapon>
+               </JobDef>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+</Patch>
