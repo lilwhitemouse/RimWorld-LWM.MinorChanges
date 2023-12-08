@@ -2,4 +2,7 @@
 <LanguageData>
   <LWMMC_TimeLeftLabel>{0} ({1} left)</LWMMC_TimeLeftLabel><!-- e.g., Solar Pinhole (10 hours left) -->
   <LWMMC_CanMeditateTo>{0} can meditate to {1}</LWMMC_CanMeditateTo><!-- Vine can mediatate to dignified, natural, artistic, morbid -->
+  <LWMMC_PollutionLeftOverYear>Time to clean: over a year (&gt;{0} pollution)</LWMMC_PollutionLeftOverYear>
+  <LWMMC_PollutionLeftTime>Pollution left to clean: {0} ({1})</LWMMC_PollutionLeftTime><!-- ...clean: 15 (4days) -->
+  <LWMMC_Parens>{0} ({1})</LWMMC_Parens><!-- So you can say "Farskip (level 5)"; for languages that go R to L -->
 </LanguageData>
