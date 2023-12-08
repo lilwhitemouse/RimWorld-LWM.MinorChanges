@@ -18,7 +18,7 @@ namespace LWM.MinorChanges
         static Type assignableFixture;
         static bool Prepare()
         {
-            if (ModsConfig.IsActive("Dubwise.DubsBadHygiene") && Settings.IsOptionSet("donotBreastfeedInBathrooms"))
+            if (ModsConfig.IsActive("Dubwise.DubsBadHygiene") && Settings.IsOptionSet("doNotBreastfeedInBathrooms"))
             {
                 assignableFixture = AppDomain.CurrentDomain.GetAssemblies()
                     .Where(a => !a.IsDynamic)
