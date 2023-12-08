@@ -27,17 +27,20 @@ namespace LWM.MinorChanges
         readonly static string[] ListOfOptionalSettings = // Default to false
         {
             "easierCasting",
+            ""
 
         };
         readonly static string[] ListOfProbablyYes =      // Default to true
         {
             "betterPinholes",
-            "donotBreastfeedInBathrooms",
+            "doNotBreastfeedInBathrooms",
             "showMeditationTypesWhenAssigningThrones",
+            "pollutionPumpsShowPollutionLeft",
+            "differentPollutionColor"
         };
         readonly static string[] ListOfNotQuiteWorkingRight = // Default to False and also get warning in settings
         {
-
+            "fixDeathrestChambersAreBedrooms",
         };
         Dictionary<string, bool> OptionalSettings = ListOfOptionalSettings.ToDictionary(k=>k, k => false);
         Dictionary<string, bool> ProbablyYes = ListOfProbablyYes.ToDictionary(k => k, k => true);
@@ -60,6 +63,13 @@ namespace LWM.MinorChanges
             ExposeDictionary(OptionalSettings, false);
             ExposeDictionary(ProbablyYes, true);
             ExposeDictionary(NotQuiteWorkingRight, false);
+
+            // "differentPollutionColor" :
+            if ((OptionalSettings.TryGetValue("differentPollutionColor", out bool x) && x) ||
+                (ProbablyYes.TryGetValue("differentPollutionColor", out x) && x))
+            {
+                ExposeColor("pollution", ref Patch_PollutionGrid_Color.ourColor, Color.red);
+            }
 
             Scribe_Values.Look(ref smelterIsHot, "smelterIsHot", true);
             Scribe_Values.Look(ref bigComputersAreHot, "bigComputersAreHot", true);
@@ -85,6 +95,26 @@ namespace LWM.MinorChanges
                 dict[key] = tmpVal;
             }
         }
+        void ExposeColor(string whichColor, ref Color color, Color defaultColor)
+        {
+            string saveString = ColorToSave(color);
+            Scribe_Values.Look(ref saveString, whichColor + "Color", ColorToSave(defaultColor));
+            color = SaveToColor(saveString);
+        }
+        string ColorToSave(Color color)
+        {
+            string v = Math.Round(color.r * 100F).ToString() + ":" + Math.Round(color.g * 100).ToString()
+                      + ":" + Math.Round(color.b * 100).ToString() + ":" + Math.Round(color.a * 100).ToString();
+            //Log.Message("LWM.MinorChanges: Changing color " + color + " into [" + v + "]");
+            return v;
+        }
+        Color SaveToColor(string s)
+        {
+            string[] bits = s.Split(':');
+            //Log.Message("LWM.MinorChanges: Splitting [" + s + "] into " + new Color(((float)int.Parse(bits[0])) / 100F, ((float)int.Parse(bits[1])) / 100F, ((float)int.Parse(bits[2])) / 100F, ((float)int.Parse(bits[3])) / 100F));
+            return new Color(((float)int.Parse(bits[0])) / 100F, ((float)int.Parse(bits[1])) / 100F,
+                              ((float)int.Parse(bits[2])) / 100F, ((float)int.Parse(bits[3])) / 100F);
+        }
 
         public void DoSettingsWindowContents(Rect inRect) {
             Rect rectWeCanSee=inRect.ContractedBy(10f);
@@ -94,8 +124,8 @@ namespace LWM.MinorChanges
                                                 (scrollBarVisible ? ScrollBarWidthMargin : 0),totalContentHeight);
             Widgets.BeginScrollView(rectWeCanSee, ref scrollPosition, rectThatHasEverything);
             float curY=0f;
-            Rect r=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
-            Widgets.Label(r, "LWMMCsettingsWarning".Translate());
+            Rect tmpRect=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
+            Widgets.Label(tmpRect, "LWMMCsettingsWarning".Translate());
             curY+=LabelHeight+3f;
 
             MakeDictBoolButtons(ref curY, rectThatHasEverything.width, OptionalSettings);
@@ -133,6 +163,65 @@ namespace LWM.MinorChanges
             Widgets.DrawLineHorizontal(10, curY + 7, rectThatHasEverything.width - 10);
             curY += 15;
 
+            ////////////////////////////// Color /////////////////////////
+            if (true || IsOptionSet("pollutionPumpsShowPollutionLeft"))
+            {
+                Widgets.Label(new Rect(0, curY, rectThatHasEverything.width, LabelHeight), "What color would you like Pollution Overlay?");
+                curY += LabelHeight;
+
+                DrawColorOptions(ref curY, rectThatHasEverything.width, ref Patch_PollutionGrid_Color.ourColor,
+                    delegate()
+                    {
+                        foreach (var map in Find.Maps)
+                        {
+                            if (map != null)
+                            {
+                                typeof(PollutionGrid)
+                                  .GetField("drawerInt", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                                  .SetValue(map.pollutionGrid, null);
+                            }
+                        }
+                    });
+
+                /*
+                string buffer;
+                float r = Patch_PollutionGrid_Color.ourColor.r;
+                float g = Patch_PollutionGrid_Color.ourColor.g;
+                float b = Patch_PollutionGrid_Color.ourColor.b;
+                float a = Patch_PollutionGrid_Color.ourColor.a;
+                Log.Message("R is " + r);
+                buffer = (r*100).ToString();
+                Widgets.TextFieldPercent(new Rect(50f, curY, 250f, LabelHeight), ref r, ref textBuffer, 0f, 1f);
+                curY += LabelHeight;
+                buffer = g.ToString();
+                Widgets.TextFieldPercent(new Rect(50f, curY, 250f, LabelHeight), ref g, ref textBuffer, 0, 1);
+                curY += LabelHeight;
+                textBuffer = ((int)(b*100)).ToString();
+                Widgets.TextFieldPercent(new Rect(50f, curY, 250f, LabelHeight), ref b, ref textBuffer, 0, 1);
+                curY += LabelHeight;
+                buffer = a.ToString();
+                Widgets.TextFieldPercent(new Rect(50f, curY, 250f, LabelHeight), ref a, ref textBuffer, 0, 1);
+                curY += LabelHeight;
+                Patch_PollutionGrid_Color.ourColor = new Color(r, g, b, a);
+                Log.Warning("Color is now " + Patch_PollutionGrid_Color.ourColor);
+                var map = Find.CurrentMap;
+                if (map != null)
+                {
+                    typeof(PollutionGrid)
+                      .GetField("drawerInt", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                      .SetValue(map.pollutionGrid, null);
+                }
+/*
+                string newName = Widgets.TextEntryLabeled(new Rect(0f, curY, frame.width - 100f, 23f),
+                "CommandRenameZoneLabel".Translate(), curName);
+
+                Widgets.Text
+                */
+
+                Widgets.DrawLineHorizontal(10, curY + 7, rectThatHasEverything.width - 10);
+                curY += 15;
+            }
+
             // For RealRuins
             MakeButton(ref curY, rectThatHasEverything.width,
                 "LWMMCNukeFactionData", () =>
@@ -146,7 +235,7 @@ namespace LWM.MinorChanges
                             {
                                 if (t.def?.IsDoor == true) // .IsEdiface() is also a possible choice, but I think this better
                                 {
-                                    if (t.def.CanHaveFaction) t.SetFaction(null);
+                                    if (t.def.CanHaveFaction && (t.thingIDNumber % 8 != 1)) t.SetFaction(null);
                                 }
                             }
                         }
@@ -155,6 +244,55 @@ namespace LWM.MinorChanges
 
             Widgets.EndScrollView();
             totalContentHeight=curY+50f;
+        }
+
+        static void DrawColorOptions(ref float curY, float width, ref Color color, Action onChange)
+        {
+            DrawColorFragment(ref curY, width, ref color.r, "Red", onChange);
+            DrawColorFragment(ref curY, width, ref color.g, "Green", onChange);
+            DrawColorFragment(ref curY, width, ref color.b, "Blue", onChange);
+            DrawColorFragment(ref curY, width, ref color.a, "LWMMC.alpha", onChange);
+        }
+        static void DrawColorFragment(ref float curY, float width, ref float colorFragment, string label, Action onChange)
+        {
+            float sliderValue = colorFragment;
+
+            // NOTE: This will break for v1.5 - remove the _NewTemp and it should work fine!
+            sliderValue = Widgets.HorizontalSlider_NewTemp(new Rect(50f, curY, width - 100f, LabelHeight), colorFragment, 0f, 1f, false, null, label.Translate(), null, 0.01F);
+
+
+            //Widgets.HorizontalSlider(new Rect(50f, curY, width - 100f, LabelHeight), ref sliderValue, new FloatRange(0, 1), label);
+            curY += LabelHeight;
+            if (sliderValue != colorFragment)
+            {
+                Log.Message("Converting " + label + " from [" + colorFragment + "] to [" + sliderValue + "]");
+                colorFragment = sliderValue;
+                onChange();
+            }
+            return;
+            //textBuffer = ((int)(colorFragment * 100)).ToString();
+            int i = (int)(colorFragment * 100);
+            int origVal = i;
+            Widgets.TextFieldNumericLabeled<int>(new Rect(50f, curY, width - 100f, LabelHeight), label.Translate()+"%", ref i, ref textBuffer, 0, 100);
+            curY += LabelHeight;
+
+            if (i != origVal)
+            {
+                Log.Message("Converting " + label + " from [" + origVal + "] to [" + i + "]");
+                colorFragment = ((float)i) / 100f;
+                onChange();
+            }
+            return;
+            //            Widgets.Label(new Rect(50f, curY, 300f, LabelHeight), label.Translate());
+            string tmp = Widgets.TextEntryLabeled(new Rect(50f, curY, width - 100f, LabelHeight), label.Translate(), textBuffer);
+            if (tmp == "") tmp = "0";
+            curY += LabelHeight;
+            if (tmp != textBuffer)
+            {
+                Log.Message("Converting " + label + " from [" + textBuffer + "]->[" + tmp+"]");
+                colorFragment = ((float)Math.Min(Math.Max(int.Parse(tmp), 100), 0))/ 100f;
+                onChange();
+            }
         }
         private static Vector2 scrollPosition=new Vector2(0f,0f);
         private static float totalContentHeight=1000f;
@@ -205,12 +343,14 @@ namespace LWM.MinorChanges
             if (s.OptionalSettings.TryGetValue(name, out x)) return x;
             if (s.ProbablyYes.TryGetValue(name, out x)) return x;
             if (s.NotQuiteWorkingRight.TryGetValue(name, out x)) return x;
+            //TODO: This should all go away, honestly
             //var v = typeof(LWM.MinorChanges.Settings).GetField(name);
             var v = typeof(LWM.MinorChanges.Settings).GetField(name, System.Reflection.BindingFlags.NonPublic |
                 System.Reflection.BindingFlags.Public | // Heh, can't forget this, right?
                 System.Reflection.BindingFlags.GetField|System.Reflection.BindingFlags.Instance);
             if (v==null) {
-                Log.Error("LWM.MinorChanges: option \""+name+"\" is not a valid Settings variable. Failing.");
+                // Log.Error("LWM.MinorChanges: option \""+name+"\" is not a valid Settings variable. Failing.");
+                goto TMPJUMP;
                 return false;
             }
             if (v.FieldType != typeof(bool)) {
@@ -220,6 +360,45 @@ namespace LWM.MinorChanges
             //return (bool)v.GetValue(null); // use this line instead of the one below if you use static settings
             //    e.g., static bool smeltherIsHot=true; //etc
             return (bool)v.GetValue(s);
+        TMPJUMP:
+            Log.Error("LWM.MinorChanges: LWM, you lazy dog, put in an actual setting for " + name);
+            return true;
+        }
+        public static void ForceSetting(string key, bool val, string message = null)
+        {
+            foreach (var dict in Dicts())
+            {
+                if (dict.ContainsKey(key))
+                {
+                    dict[key] = val;
+                    if (message == null) Log.Message("LWM.MinorChanges: Setting directly changed for some reason. This is probably okay. " + key + " set to " + val);
+                    else Log.Message("LWM.MinorChanges: Settings changed: " + message);
+                    // Now, save the changed setting:
+                    LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>().Write();
+                }
+            }
+            Log.Warning("Tried to change setting " + key + " to " + val + " but cannot find setting?!");
+            return;
+        }
+        static IEnumerable<Dictionary<string, bool>> Dicts()
+        {
+            var s = LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>();
+            yield return s.OptionalSettings;
+            yield return s.ProbablyYes;
+            yield return s.NotQuiteWorkingRight;
+        }
+
+        [Conditional("DEBUG")]
+        public static void SanityCheck()
+        {
+            if (LanguageDatabase.activeLanguage.DisplayName.ToLower() == "english")
+            {
+                foreach (var s in Dicts().SelectMany(d => d.Keys).Select(s=>"LWMMC"+s))
+                {
+                    if (!s.CanTranslate()) Log.Error("Cannot find translation string for " + s + ": "+s.Translate());
+                    if (!(s + "Desc").CanTranslate()) Log.Error("Cannot find translation string for " + s+"Desc");
+                }
+            }
         }
         // Actual variables:
         //   public ones are ones C# needs to access
@@ -237,5 +416,8 @@ namespace LWM.MinorChanges
         public bool bloodfeedOnPeopleWhoWant=false;
 
         public bool beSilly=false; // well, slightly silly anyway
+
+        private static string textBuffer;
     }
+
 }
