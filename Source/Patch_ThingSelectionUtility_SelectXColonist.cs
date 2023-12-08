@@ -107,6 +107,7 @@ namespace LWM.MinorChanges
                     if (table==null) {
                         // If the player has never opened the Animals window, there's no table!
                         // But we can force building the table:
+                        Debug.Log("Could not get the Animal Table's .table variable; regenerating.");
                         mtw.Notify_ResolutionChanged();
                         // try again
                         table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
@@ -116,7 +117,7 @@ namespace LWM.MinorChanges
                             .GetValue(mtw as MainTabWindow_PawnTable);
                         if (table == null)
                         {
-                            Log.Warning("LWM.MinorChanges: Could not generate Animals MainTabWindow's .table");
+                            Debug.Warning("LWM.MinorChanges: Could not generate Animals MainTabWindow's .table");
                             return true;  // fail gracefully
                         }
                     }
