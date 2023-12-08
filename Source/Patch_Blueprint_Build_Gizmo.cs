@@ -13,8 +13,8 @@ using HarmonyLib;
 namespace LWM.MinorChanges
 {
     /// <summary>
-    /// In Blueprint_Build, it determins whether to show the gizmo to change
-    /// styles based on:
+    /// Allow changing Ideology styles of blueprints
+    /// In Blueprint_Build, it determins whether to show the gizmo to change styles based on:
     /// if (ModsConfig.IdeologyActive && Find.IdeoManager.classicMode && (thingDef = (this.def.entityDefToBuil...
     /// We want to simply remove Find.IdeoManager.classicMode
     /// </summary>
@@ -23,6 +23,7 @@ namespace LWM.MinorChanges
     {
         static bool Prepare()
         {
+            return ModsConfig.IdeologyActive; //TODO
             return true;
         }
         static MethodBase TargetMethod() //The target method is found using the custom logic defined here
