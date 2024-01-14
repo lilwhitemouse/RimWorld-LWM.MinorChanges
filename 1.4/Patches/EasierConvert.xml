@@ -1,0 +1,14 @@
+<Patch>
+  <Operation Class="LWM.MinorChanges.PatchOpLWMMC">
+    <optionKey>easierConvert</optionKey>
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationReplace" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>/Defs/AbilityDef[defName="Convert"]/comps/li[@Class='CompProperties_AbilityConvert']/convertPowerFactor</xpath>
+        <value>
+          <convertPowerFactor>4</convertPowerFactor> <!-- Vanilla is 2 -->
+        </value>
+      </li>
+    </operations>
+  </Operation>
+</Patch>
