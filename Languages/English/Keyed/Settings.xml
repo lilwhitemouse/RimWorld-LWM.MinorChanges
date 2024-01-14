@@ -31,11 +31,16 @@
   <LWMMCpollutionPumpsShowPollutionLeftDesc>Pollux trees and Pollution pumps will show how many cells of pollution are still left, along with an estimate of how long it will take to clean it all up</LWMMCpollutionPumpsShowPollutionLeftDesc>
   <LWMMCdifferentPollutionColor>Change color of Pollution Overlay</LWMMCdifferentPollutionColor>
   <LWMMCdifferentPollutionColorDesc>Lets you pick a new color and transparency! Updates in real time so you can decide what you like</LWMMCdifferentPollutionColorDesc>
-
+  <LWMMCeasierConvert>Make Convert ability stronger(x2)</LWMMCeasierConvert>
+  <LWMMCeasierConvertDesc>(Requires Ideology) The Moral Guide's "Convert" ability is kind of boring. It can be used to eventually convert someone, but it takes a lot of effort and attention. This makes it more fun for me!\nYou, of course, do you. Play your story however you want!</LWMMCeasierConvertDesc>
+  <LWMMCcheaperFlagstone>Reduce cost of flagstone to 2</LWMMCcheaperFlagstone>
+  <LWMMCcheaperFlagstoneDesc>I like the mod Cheaper Flagstone, but it hasn't been updated to work with all the mods I use. This application should work with most mods! I may remove this option when Cheaper Flagstone is updated</LWMMCcheaperFlagstoneDesc>
+  <LWMMClabelPsycastLevels>Label Levels of Pyscasts</LWMMClabelPsycastLevels>
+  <LWMMClabelPsycastLevelsDesc>This labels the NEUROTRAINERS with the level of the Psycast. Useful if you have 12 of them in some storage shelves and don't know which ones your new 4th level psycaster can use</LWMMClabelPsycastLevelsDesc>
 
   
   <LWMMCNukeFactionData>Clear Faction Data for Doors? (Real Ruins)</LWMMCNukeFactionData>
-  <LWMMCNukeFactionDataDesc>This applies to the current map and is only relevant to Real Ruins - it makes it so your colonists can actually go through the abandoned doors! I have no idea if it's safe to use anywhere else. Use when you are on a Ruins map - at your own risk!</LWMMCNukeFactionDataDesc>
+  <LWMMCNukeFactionDataDesc>This applies to the current map and is only relevant to Real Ruins - it makes it so your colonists can actually go through the abandoned doors! I have no idea if it's safe to use anywhere else. Recommended to use when you first enter a map with Ruins - at your own risk!\nNote: some doors are just stuck and still won't unlock</LWMMCNukeFactionDataDesc>
   <LWMMCbeSilly>Add a few small silly things?</LWMMCbeSilly>
   <LWMMCbeSillyDesc>NOTE: you will have to restart for this to take effect!\n\nThese are small things that should not impact gameplay to any serious amount, but are fun and amusing.</LWMMCbeSillyDesc>
   
