@@ -1,0 +1,12 @@
+<Patch>
+  <Operation Class="LWM.MinorChanges.PatchOpLWMMC">
+    <optionKey>fastAnimalSleepingSpots</optionKey>
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="AnimalSleepingSpot"]</xpath>
+        <value><placingDraggableDimensions>2</placingDraggableDimensions></value>
+      </li>
+    </operations>
+  </Operation>
+</Patch>

@@ -35,6 +35,7 @@ namespace LWM.MinorChanges
         readonly static string[] ListOfProbablyYes =      // Default to true
         {
             "betterPinholes",
+            "fastAnimalSleepingSpots",
             "doNotBreastfeedInBathrooms",
             "showMeditationTypesWhenAssigningThrones",
             "pollutionPumpsShowPollutionLeft",
