@@ -22,12 +22,14 @@ namespace LWM.MinorChanges
          *        in the code via `if (Settings.IsOptionSet("newSettingName"))...`
          *        in the XML patching via   <Operation Class="LWM.MinorChanges.PatchOpLWMMC"><!--like Sequence-->
                                                <optionKey>newSettingName</optionKey>
-         */                                              
-        
+         */
+
         readonly static string[] ListOfOptionalSettings = // Default to false
         {
             "easierCasting",
-            ""
+            "easierConvert",
+            "labelPsycastLevels",
+            "cheaperFlagstone"
 
         };
         readonly static string[] ListOfProbablyYes =      // Default to true
@@ -241,8 +243,30 @@ namespace LWM.MinorChanges
                         }
                     }
                 });
-
+#if false // Fixed by mlie. Well, this isn't needed anymore, anyway
+            // For Nature's Pretty Sweet
+            MakeButton(ref curY, rectThatHasEverything.width,
+                "LWMMCNukeLavaFieldsSteamVents", () =>
+                {
+                    var map = Find.CurrentMap;
+                    if (map != null)
+                    {
+                        foreach (var c in map.AllCells)
+                        {
+                            foreach (var t in c.GetThingList(map))
+                            {
+                                if (t.def.defName == "TKKN_SteamVent")
+                                {
+                                    t.Destroy();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                });
+#endif
             Widgets.EndScrollView();
+
             totalContentHeight=curY+50f;
         }
 
