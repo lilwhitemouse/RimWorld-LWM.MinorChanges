@@ -1,0 +1,14 @@
+<Patch>
+  <!-- This is a very general version of Cheaper Flagstone (2) which works with more types of stone
+       I will probably remove it when they get around to updating their mod -->
+  <Operation Class="LWM.MinorChanges.PatchOpLWMMC">
+    <optionKey>cheaperFlagstone</optionKey>
+    <operations>
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/TerrainDef[@ParentName="FlagstoneBase"]/costList/*[text()="4"]/text()</xpath>
+        <value>2</value>
+      </li>
+    </operations>
+  </Operation>
+</Patch>
+
