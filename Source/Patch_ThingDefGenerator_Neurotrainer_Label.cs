@@ -52,12 +52,12 @@ namespace LWM.MinorChanges
                 yield return code[i];
                 if (code[i].opcode == OpCodes.Ldstr && (string)code[i].operand == "PsycastNeurotrainerLabel")
                 {
-                    Log.Message("LWM.MinorChanges: Found PsycastNeurotrainerLabel");
+                    //Log.Message("LWM.MinorChanges: Found PsycastNeurotrainerLabel");
                     i++;
                     yield return code[i]; // should be ldloc.2 or something - loading the def
                     if (code[i+1].opcode == OpCodes.Ldfld && code[i+1].OperandIs(typeof(Verse.Def).GetField("label")))
                     {
-                        Log.Message("....and found the label!");
+                        //Log.Message("....and found the label!");
                         yield return code[i]; // put the def on the stack again!
                         i++;
                         yield return code[i]; // the ldfld .label

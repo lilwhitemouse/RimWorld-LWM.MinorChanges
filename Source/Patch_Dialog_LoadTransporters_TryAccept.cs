@@ -38,21 +38,21 @@ namespace LWM.MinorChanges
                     var t = transporter.leftToLoad[i];
                     if (t.CountToTransfer > 1 && t.AnyThing is Pawn)
                     {
-                        Log.Warning("Removing tranferables[" + i + "] with " + t.CountToTransfer + " items");
+                        Debug.Warn("Removing tranferables[" + i + "] with " + t.CountToTransfer + " items");
                         transporter.leftToLoad.RemoveAt(i);
                         foreach (var critter in t.things)
                         {
                             var justaTOW = new TransferableOneWay();
                             justaTOW.things.Add(critter);
                             justaTOW.AdjustTo(1);
-                            Log.Message("Adding new item with " + justaTOW.AnyThing + " and a count of " + justaTOW.CountToTransfer);
+                            Debug.Mess("Adding new item with " + justaTOW.AnyThing + " and a count of " + justaTOW.CountToTransfer);
                             tmp.Add(justaTOW);
                         }
                     }
                 }
                 if (tmp.Count > 0)
                 {
-                    Log.Warning("Adding " + tmp.Count + " to the " + transporter.leftToLoad.Count + " still there.");
+                    Debug.Warn("Adding " + tmp.Count + " to the " + transporter.leftToLoad.Count + " still there.");
                     transporter.leftToLoad.AddRange(tmp);
                 }
             } // end 1 transporter

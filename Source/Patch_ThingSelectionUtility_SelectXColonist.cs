@@ -49,21 +49,21 @@ namespace LWM.MinorChanges
             Pawn selPawn = selThing as Pawn;
             if (selPawn==null) return true;
             if (selPawn.Map != Find.CurrentMap) {
-                Debug.Log("Selection: pawn "+selPawn+" is not in the same map");
+                Debug.Mess("Selection: pawn "+selPawn+" is not in the same map");
                 return true;
             }
             List<Pawn> listOfSimilarPawns;
             // Get "civilized" humans:
             //if (!p.RaceProps.Animal) return true; // also get wildppl:
             if (!selPawn.AnimalOrWildMan()) {
-                Debug.Warning("SelectXPawn: "+selPawn+" is humanlike");
+                Debug.Warn("SelectXPawn: "+selPawn+" is humanlike");
                 // human-ish
                 if (selPawn.Faction==Faction.OfPlayer) {
-                    Debug.Log("  but is player's faction.");
+                    Debug.Mess("  but is player's faction.");
                     return true;
                 }
                 if (selPawn.IsPrisoner) {
-                    Debug.Log("  and is a Prisoner");
+                    Debug.Mess("  and is a Prisoner");
                     // there is no in-game list of prisoners, so we make one
                     // and sort it how we please and use it:
                     // Note: don't use selPawn.IsPrisonerOfColony because may be 
@@ -72,13 +72,13 @@ namespace LWM.MinorChanges
                                .Where(x => x.HostFaction == selPawn.HostFaction).ToList();
                     // If this is not correct, we'll still default to vanilla later, so all good.
                 } else { //non player faction, non prisoner.
-                    Debug.Log("  and is a member of faction "+selPawn.Faction);
+                    Debug.Mess("  and is a member of faction "+selPawn.Faction);
                     // cycle through all pawns of this faction:
                     listOfSimilarPawns=Find.CurrentMap.mapPawns.FreeHumanlikesSpawnedOfFaction(selPawn.Faction);
                 }
             } else { //animal (or wildperson, which is counted with the animals)
                 if (selPawn.Faction == Faction.OfPlayer) {
-                    Debug.Warning("SelectXPawn: "+selPawn+" is tamed animal!");
+                    Debug.Warn("SelectXPawn: "+selPawn+" is tamed animal!");
                     // tamed animal!!
                     // This is trickier than I first thought for one reason:
                     //   Sorting.
@@ -106,7 +106,7 @@ namespace LWM.MinorChanges
                     if (table==null) {
                         // If the player has never opened the Animals window, there's no table!
                         // But we can force building the table:
-                        Debug.Log("Could not get the Animal Table's .table variable; regenerating.");
+                        Debug.Mess("Could not get the Animal Table's .table variable; regenerating.");
                         mtw.Notify_ResolutionChanged();
                         // try again
                         table=(PawnTable)typeof(MainTabWindow_PawnTable).GetField("table",
@@ -116,13 +116,13 @@ namespace LWM.MinorChanges
                             .GetValue(mtw as MainTabWindow_PawnTable);
                         if (table == null)
                         {
-                            Debug.Warning("LWM.MinorChanges: Could not generate Animals MainTabWindow's .table");
+                            Debug.Warn("LWM.MinorChanges: Could not generate Animals MainTabWindow's .table");
                             return true;  // fail gracefully
                         }
                     }
                     listOfSimilarPawns = table.PawnsListForReading;
                 } else {// one animal selected, but is not tame - Wildlife!
-                    Debug.Warning("SelectXPawn: "+selPawn+" is wild animal!");
+                    Debug.Warn("SelectXPawn: "+selPawn+" is wild animal!");
                     // grabbed straight from MainTabWindow_Wildlife:
                     MainTabWindow_Wildlife mtw=(MainTabWindow_Wildlife)
                         (DefDatabase<MainButtonDef>.GetNamed("Wildlife").TabWindow as MainTabWindow_Wildlife);

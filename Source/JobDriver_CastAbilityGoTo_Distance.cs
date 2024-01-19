@@ -42,10 +42,10 @@ namespace LWM.MinorChanges
             // Controlled by key "easierCasting" via existance of the necessary JobDef added by xml
             jobDef = DefDatabase<JobDef>.GetNamed("LWM_MC_CastAbilityGoTo_Distance", false);
             if (jobDef == null) {
-                LWM.MinorChanges.Debug.Error("LWM, your CastAbility JobDefs are off! Are you all right?");
+                LWM.MinorChanges.Debug.Err("LWM, your CastAbility JobDefs are off! Are you all right?");
                 return;
             }
-            LWM.MinorChanges.Debug.Warning("Adding custom JobDefs to all ranged castabilities...");
+            LWM.MinorChanges.Debug.Warn("Adding custom JobDefs to all ranged castabilities...");
             // So SolarPinhole and many many other casting abilities have a jobDef of null...
             //   This isn't a mistake; the job gets chosen elsewhere. If the ability has
             //   targetWorldCell, then Command_Ability calls the ability's QueueCastingJob, 
@@ -60,7 +60,7 @@ namespace LWM.MinorChanges
                         .Where(d=>d.jobDef == null && d.targetWorldCell == false)
                         .Where(d=>d.verbProperties.range > 0f).Where(d=>d.hostile==false))
             {
-                Debug.Log("  --Patching " + d.defName);
+                Debug.Mess("  --Patching " + d.defName);
                 defNames.Add(d.defName);
                 d.jobDef = jobDef;
                 d.displayGizmoWhileUndrafted = true;
@@ -97,7 +97,7 @@ namespace LWM.MinorChanges
             Toil toil = Toils_Goto.GotoCell(ind, peMode);
             IntVec3 previousPosition = IntVec3.Invalid;
             toil.initAction = delegate {
-                Debug.Warning("CastAbilityGoTo_Distance: " + toil.actor + " is starting from " + toil.actor.Position);
+                Debug.Warn("CastAbilityGoTo_Distance: " + toil.actor + " is starting from " + toil.actor.Position);
                 previousPosition = toil.actor.Position;
                 if (this.pawn.CurJob.GetTarget(ind).HasThing) this.FailOnDespawnedNullOrForbidden(ind);
                 //Log.Error("InitAction setting previousPosition to " + previousPosition);
@@ -105,7 +105,7 @@ namespace LWM.MinorChanges
             toil.tickAction += delegate {
                 if (toil.actor.Position != previousPosition)
                 {
-                    Debug.Log("CastAbilityGoTo_Distance: " + toil.actor + " has moved to " + toil.actor.Position);
+                    Debug.Mess("CastAbilityGoTo_Distance: " + toil.actor + " has moved to " + toil.actor.Position);
                     previousPosition = toil.actor.Position;
                     //Log.Message("Have moved to " + previousPosition);
                     // This won't work: if (ability.verb.CanHitTarget(toil.actor.CurJob.GetTarget(ind)))
@@ -113,15 +113,15 @@ namespace LWM.MinorChanges
                     // But this should be sufficient:
                     if ((((Verb)ability.verb) as Verb).CanHitTargetFrom(toil.actor.Position, toil.actor.CurJob.GetTarget(ind)))
                     {
-                        Debug.Warning("CastAbilityGoTo_Distance: " + toil.actor + " can cast " + ability.def.defName);
+                        Debug.Warn("CastAbilityGoTo_Distance: " + toil.actor + " can cast " + ability.def.defName);
                         if (toil.actor.Position.Standable(toil.actor.Map))
                         {
-                            Debug.Log("Finishing pathing to stand on the cell");
+                            Debug.Mess("Finishing pathing to stand on the cell");
                             toil.actor.pather.StartPath(toil.actor.Position, PathEndMode.OnCell);
                         }
                         else
                         {
-                            Debug.Log("Starting casting!");
+                            Debug.Mess("Starting casting!");
                             toil.actor.jobs.curDriver.ReadyForNextToil();
                         }
                     }
@@ -134,7 +134,7 @@ namespace LWM.MinorChanges
         {
             var t = Toils_Combat.CastVerb(ind1, ind2, someBool);
             t.initAction = (Action)delegate {
-                Debug.Warning("CastAbilityGotoDistance: " + t.actor + " is starting to cast "+
+                Debug.Warn("CastAbilityGotoDistance: " + t.actor + " is starting to cast "+
                               ((t.actor.CurJob.verbToUse is Verb_CastPsycast vcp) ? vcp.ability.def.defName : "something!"));            
             }+t.initAction;
             return t;

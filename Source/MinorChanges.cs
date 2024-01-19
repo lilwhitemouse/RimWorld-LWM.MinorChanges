@@ -43,22 +43,23 @@ namespace LWM.MinorChanges
     }
     internal static class Debug
     {
+        // Nifty! Won't even be compiled into assembly if not DEBUG
         [Conditional("DEBUG")]
-        internal static void Log(string s)
+        internal static void Mess(string s)
         {
-            Verse.Log.Message(s);
+            Verse.Log.Message("MinorChanges: " + s);
         }
 
         [Conditional("DEBUG")]
-        internal static void Warning(string s)
+        internal static void Warn(string s)
         {
-            Verse.Log.Warning(s);
+            Verse.Log.Warning("MinorChanges: " + s);
         }
 
         [Conditional("DEBUG")]
-        internal static void Error(string s)
+        internal static void Err(string s)
         {
-            Verse.Log.Error(s);
+            Verse.Log.Error("MinorChanges: " + s);
         }
     }
 }
