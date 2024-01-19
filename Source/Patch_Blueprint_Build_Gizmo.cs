@@ -23,8 +23,7 @@ namespace LWM.MinorChanges
     {
         static bool Prepare()
         {
-            return ModsConfig.IdeologyActive; //TODO
-            return true;
+            return ModsConfig.IdeologyActive && Settings.IsOptionSet("allowChangingStyles");
         }
         static MethodBase TargetMethod() //The target method is found using the custom logic defined here
         {
