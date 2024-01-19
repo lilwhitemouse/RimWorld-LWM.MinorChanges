@@ -27,23 +27,34 @@ namespace LWM.MinorChanges
         readonly static string[] ListOfOptionalSettings = // Default to false
         {
             "easierCasting",
+            "bloodfeedOnPeopleWhoWant",
+            "differentPollutionColor",
+            "smelterIsHot",
+            "bigComputersAreHot",
             "easierConvert",
             "labelPsycastLevels",
-            "cheaperFlagstone"
-
+            "geoPlantWalkable",
+            "cheaperFlagstone",
+            "beSilly"
         };
         readonly static string[] ListOfProbablyYes =      // Default to true
         {
+            "allowMultiUnloading",
+            "selectNextAnimal",
             "betterPinholes",
+            "applyDrugDefaults",
             "fastAnimalSleepingSpots",
+            "cutTreesLikePlants",
+            "showHowLongBiosculpting",
             "doNotBreastfeedInBathrooms",
             "showMeditationTypesWhenAssigningThrones",
-            "pollutionPumpsShowPollutionLeft",
-            "differentPollutionColor"
+            "allowChangingStyles",
+            "pollutionPumpsShowPollutionLeft"
         };
         readonly static string[] ListOfNotQuiteWorkingRight = // Default to False and also get warning in settings
         {
-            "fixDeathrestChambersAreBedrooms",
+            "betterSpots",
+            //"fixDeathrestChambersAreBedrooms", // don't even try yet
         };
         Dictionary<string, bool> OptionalSettings = ListOfOptionalSettings.ToDictionary(k=>k, k => false);
         Dictionary<string, bool> ProbablyYes = ListOfProbablyYes.ToDictionary(k => k, k => true);
@@ -73,21 +84,6 @@ namespace LWM.MinorChanges
             {
                 ExposeColor("pollution", ref Patch_PollutionGrid_Color.ourColor, Color.red);
             }
-
-            Scribe_Values.Look(ref smelterIsHot, "smelterIsHot", true);
-            Scribe_Values.Look(ref bigComputersAreHot, "bigComputersAreHot", true);
-
-            Scribe_Values.Look(ref applyDrugDefaults, "applyDrugDefaults", true);
-            Scribe_Values.Look(ref allowMultiUnloading, "allowMultiUnloading", true);
-
-            Scribe_Values.Look(ref betterSpots, "betterSpots", true);
-            Scribe_Values.Look(ref selectNextAnimal, "selectNextAnimal", true);
-
-            Scribe_Values.Look(ref geoPlantWalkable,"geoPlantWalkable", false);
-
-            Scribe_Values.Look(ref bloodfeedOnPeopleWhoWant, "bloodfeedOnPeopleWhoWant", false);
-
-            Scribe_Values.Look(ref beSilly, "beSilly", false);
         }
         void ExposeDictionary(Dictionary<string, bool> dict, bool defaultVal)
         {
@@ -130,38 +126,29 @@ namespace LWM.MinorChanges
             Rect tmpRect=new Rect(0,curY,rectThatHasEverything.width, LabelHeight);
             Widgets.Label(tmpRect, "LWMMCsettingsWarning".Translate());
             curY+=LabelHeight+3f;
+            Widgets.DrawLineHorizontal(10, curY + 7, rectThatHasEverything.width - 10);
+            curY += 15;
 
             MakeDictBoolButtons(ref curY, rectThatHasEverything.width, OptionalSettings);
-            // TODO: Some label here
-            MakeDictBoolButtons(ref curY, rectThatHasEverything.width, ProbablyYes);
+
+            Widgets.DrawLineHorizontal(10, curY + 7, rectThatHasEverything.width - 10);
+            curY += 15;
+
             Widgets.Label(new Rect(0, curY, rectThatHasEverything.width, LabelHeight), 
-                 "NOT CURRENTLY WORKING:");
+                                   "LWMMCsettingsThatDefaultToYes".Translate());
             curY += LabelHeight + 3f;
-            MakeBoolButton(ref curY, rectThatHasEverything.width,
-                           "LWMMCbetterSpots", ref betterSpots);
-            // TODO: label above should go here?
-            MakeDictBoolButtons(ref curY, rectThatHasEverything.width, NotQuiteWorkingRight);
+            MakeDictBoolButtons(ref curY, rectThatHasEverything.width, ProbablyYes);
 
-            MakeBoolButton(ref curY, rectThatHasEverything.width,
-                           "LWMMCselectNextAnimal", ref selectNextAnimal);
-            MakeBoolButton(ref curY, rectThatHasEverything.width,
-                           "LWMMCsmelterIsHot", ref smelterIsHot);
-            MakeBoolButton(ref curY, rectThatHasEverything.width,
-                           "LWMMCbigComputersAreHot", ref bigComputersAreHot);
-            MakeBoolButton(ref curY, rectThatHasEverything.width,
-                           "LWMMCapplyDrugDefaults", ref applyDrugDefaults);
-            MakeBoolButton(ref curY, rectThatHasEverything.width,
-                           "LWMMCallowMultiUnloading", ref allowMultiUnloading);
-            MakeBoolButton(ref curY, rectThatHasEverything.width,
-                           "LWMMCgeoPlantWalkable", ref geoPlantWalkable);
-            MakeBoolButton(ref curY, rectThatHasEverything.width,
-                           "LWMMCbloodfeedOnPeopleWhoWant", ref bloodfeedOnPeopleWhoWant);
 
-            Widgets.DrawLineHorizontal(10, curY+7, rectThatHasEverything.width-10);
-            curY+=15;
-
-            MakeBoolButton(ref curY, rectThatHasEverything.width,
-                           "LWMMCbeSilly", ref beSilly);
+            Widgets.DrawLineHorizontal(10, curY + 7, rectThatHasEverything.width - 10);
+            curY += 15;
+            if (NotQuiteWorkingRight.Count > 0)
+            {
+                Widgets.Label(new Rect(0, curY, rectThatHasEverything.width, LabelHeight),
+                     "LWMMCsettingsThatMayNotWork".Translate());
+                curY += LabelHeight + 3f;
+                MakeDictBoolButtons(ref curY, rectThatHasEverything.width, NotQuiteWorkingRight);
+            }
 
             Widgets.DrawLineHorizontal(10, curY + 7, rectThatHasEverything.width - 10);
             curY += 15;
@@ -169,7 +156,7 @@ namespace LWM.MinorChanges
             ////////////////////////////// Color /////////////////////////
             if (true || IsOptionSet("pollutionPumpsShowPollutionLeft"))
             {
-                Widgets.Label(new Rect(0, curY, rectThatHasEverything.width, LabelHeight), "What color would you like Pollution Overlay?");
+                Widgets.Label(new Rect(0, curY, rectThatHasEverything.width, LabelHeight), "LWMMCwhatColorPollution".Translate());
                 curY += LabelHeight;
 
                 DrawColorOptions(ref curY, rectThatHasEverything.width, ref Patch_PollutionGrid_Color.ourColor,
@@ -214,11 +201,6 @@ namespace LWM.MinorChanges
                       .GetField("drawerInt", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                       .SetValue(map.pollutionGrid, null);
                 }
-/*
-                string newName = Widgets.TextEntryLabeled(new Rect(0f, curY, frame.width - 100f, 23f),
-                "CommandRenameZoneLabel".Translate(), curName);
-
-                Widgets.Text
                 */
 
                 Widgets.DrawLineHorizontal(10, curY + 7, rectThatHasEverything.width - 10);
@@ -276,48 +258,25 @@ namespace LWM.MinorChanges
             DrawColorFragment(ref curY, width, ref color.r, "Red", onChange);
             DrawColorFragment(ref curY, width, ref color.g, "Green", onChange);
             DrawColorFragment(ref curY, width, ref color.b, "Blue", onChange);
-            DrawColorFragment(ref curY, width, ref color.a, "LWMMC.alpha", onChange);
+            DrawColorFragment(ref curY, width, ref color.a, "LWMMCalpha", onChange);
         }
         static void DrawColorFragment(ref float curY, float width, ref float colorFragment, string label, Action onChange)
         {
             float sliderValue = colorFragment;
 
-            // NOTE: This will break for v1.5 - remove the _NewTemp and it should work fine!
+            // NOTE: This will break for RimWorld v1.5 - remove the "_NewTemp" and it should work fine!
+            //       ....I know of no way to make this future safe >_<
             sliderValue = Widgets.HorizontalSlider_NewTemp(new Rect(50f, curY, width - 100f, LabelHeight), colorFragment, 0f, 1f, false, null, label.Translate(), null, 0.01F);
-
 
             //Widgets.HorizontalSlider(new Rect(50f, curY, width - 100f, LabelHeight), ref sliderValue, new FloatRange(0, 1), label);
             curY += LabelHeight;
             if (sliderValue != colorFragment)
             {
-                Log.Message("Converting " + label + " from [" + colorFragment + "] to [" + sliderValue + "]");
+                //Log.Message("Converting " + label + " from [" + colorFragment + "] to [" + sliderValue + "]");
                 colorFragment = sliderValue;
                 onChange();
             }
             return;
-            //textBuffer = ((int)(colorFragment * 100)).ToString();
-            int i = (int)(colorFragment * 100);
-            int origVal = i;
-            Widgets.TextFieldNumericLabeled<int>(new Rect(50f, curY, width - 100f, LabelHeight), label.Translate()+"%", ref i, ref textBuffer, 0, 100);
-            curY += LabelHeight;
-
-            if (i != origVal)
-            {
-                Log.Message("Converting " + label + " from [" + origVal + "] to [" + i + "]");
-                colorFragment = ((float)i) / 100f;
-                onChange();
-            }
-            return;
-            //            Widgets.Label(new Rect(50f, curY, 300f, LabelHeight), label.Translate());
-            string tmp = Widgets.TextEntryLabeled(new Rect(50f, curY, width - 100f, LabelHeight), label.Translate(), textBuffer);
-            if (tmp == "") tmp = "0";
-            curY += LabelHeight;
-            if (tmp != textBuffer)
-            {
-                Log.Message("Converting " + label + " from [" + textBuffer + "]->[" + tmp+"]");
-                colorFragment = ((float)Math.Min(Math.Max(int.Parse(tmp), 100), 0))/ 100f;
-                onChange();
-            }
         }
         private static Vector2 scrollPosition=new Vector2(0f,0f);
         private static float totalContentHeight=1000f;
@@ -368,14 +327,14 @@ namespace LWM.MinorChanges
             if (s.OptionalSettings.TryGetValue(name, out x)) return x;
             if (s.ProbablyYes.TryGetValue(name, out x)) return x;
             if (s.NotQuiteWorkingRight.TryGetValue(name, out x)) return x;
-            //TODO: This should all go away, honestly
+            /* Fancy shenanigans to get setting value from bool value....
+             * but honestly, it's probably better to do a Dict that has all the values stored           
             //var v = typeof(LWM.MinorChanges.Settings).GetField(name);
             var v = typeof(LWM.MinorChanges.Settings).GetField(name, System.Reflection.BindingFlags.NonPublic |
                 System.Reflection.BindingFlags.Public | // Heh, can't forget this, right?
                 System.Reflection.BindingFlags.GetField|System.Reflection.BindingFlags.Instance);
             if (v==null) {
-                // Log.Error("LWM.MinorChanges: option \""+name+"\" is not a valid Settings variable. Failing.");
-                goto TMPJUMP;
+                Log.Error("LWM.MinorChanges: option \""+name+"\" is not a valid Settings variable. Failing.");
                 return false;
             }
             if (v.FieldType != typeof(bool)) {
@@ -385,7 +344,8 @@ namespace LWM.MinorChanges
             //return (bool)v.GetValue(null); // use this line instead of the one below if you use static settings
             //    e.g., static bool smeltherIsHot=true; //etc
             return (bool)v.GetValue(s);
-        TMPJUMP:
+            */
+            // Note to self:
             Log.Error("LWM.MinorChanges: LWM, you lazy dog, put in an actual setting for " + name);
             return true;
         }
@@ -425,22 +385,7 @@ namespace LWM.MinorChanges
                 }
             }
         }
-        // Actual variables:
-        //   public ones are ones C# needs to access
-        //   private ones are ones only used for xml Patching.
-        public bool selectNextAnimal=true;
-        bool smelterIsHot=true;
-        bool bigComputersAreHot=true;
-
-        public bool applyDrugDefaults=true;
-        public bool allowMultiUnloading=true;
-
-        bool betterSpots=true;
-        bool geoPlantWalkable=false;
-
-        public bool bloodfeedOnPeopleWhoWant=false;
-
-        public bool beSilly=false; // well, slightly silly anyway
+        //public bool beSilly=false; // well, slightly silly anyway
 
         private static string textBuffer;
     }

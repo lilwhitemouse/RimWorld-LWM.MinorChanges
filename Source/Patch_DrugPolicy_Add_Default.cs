@@ -30,7 +30,7 @@ namespace LWM.MinorChanges
     [HarmonyPatch(typeof(RimWorld.DrugPolicy), "InitializeIfNeeded")]
     public static class Patch_DrugPolicy_IIN {
         public static bool Prepare() {
-            return LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>().applyDrugDefaults;
+            return Settings.IsOptionSet("applyDrugDefaults");
         }
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions,
                                                        ILGenerator generator) {

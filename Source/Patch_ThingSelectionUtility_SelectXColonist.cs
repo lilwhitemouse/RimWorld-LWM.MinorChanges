@@ -43,8 +43,7 @@ namespace LWM.MinorChanges
             return DetourToSelectXPawn(false);
         }
         public static bool DetourToSelectXPawn(bool goToNext) {
-            if (!LoadedModManager.GetMod<MinorChangesMod>()
-                .GetSettings<Settings>().selectNextAnimal) return true; // vanilla
+            if (!Settings.IsOptionSet("selectNextAnimal")) return true;
             Thing selThing = Find.Selector.SingleSelectedThing;
             if (selThing==null) return true;
             Pawn selPawn = selThing as Pawn;

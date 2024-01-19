@@ -20,7 +20,7 @@ namespace LWM.MinorChanges
     [HarmonyPatch(typeof(Verse.GenRecipe), "MakeRecipeProducts")]
     static class Patch_GenRecipe_AddGoldEggs {
         static bool Prepare() {
-            return LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>().beSilly;
+            return Settings.IsOptionSet("beSilly");
         }
         static IEnumerable<Thing> Postfix(IEnumerable<Thing> __result, RecipeDef recipeDef, List<Thing> ingredients, Pawn worker) {
             if (recipeDef.defName=="ButcherCorpseFlesh" && ingredients.Count==1 &&

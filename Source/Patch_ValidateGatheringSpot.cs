@@ -33,6 +33,10 @@ namespace LWM.MinorChanges
      */
     [HarmonyPatch(typeof(RimWorld.GatheringsUtility), "ValidateGatheringSpot")]
     class Patch_ValidateGatheringSpot {
+        static bool Prepare()
+        {
+            return Settings.IsOptionSet("betterSpots");
+        }
         // to remove the first Standable test in its entirety:
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions,
                                                        ILGenerator generator) {

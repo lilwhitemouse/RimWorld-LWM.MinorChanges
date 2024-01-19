@@ -15,9 +15,8 @@ namespace LWM.MinorChanges
     /************* Verse.AI's JobDriver_Carried's GetReport(Pawn, Thing) *************/
     [HarmonyPatch(typeof(Verse.AI.JobDriver_Carried), "GetReport", new Type[] {typeof(Pawn), typeof(Thing)})]
     public static class Patch_JobDriver_Carried_GetReport_forBiosculpturPod {
-        public static bool Prepare() { // TODO: Go ahead and make this setting dependent
-            return true //LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>()....??
-              && (ModsConfig.IdeologyActive);
+        public static bool Prepare() {
+            return ModsConfig.IdeologyActive && Settings.IsOptionSet("showHowLongBiosculpting");
         }
         public static void Postfix(ref string __result, Pawn pawn, Thing spawnedParentOrMe) {
             if (spawnedParentOrMe.TryGetComp<CompBiosculpterPod>() is CompBiosculpterPod compPod

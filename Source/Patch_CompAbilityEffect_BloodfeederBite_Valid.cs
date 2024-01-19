@@ -25,8 +25,11 @@ namespace LWM.MinorChanges
     [HarmonyPatch(typeof(RimWorld.CompAbilityEffect_BloodfeederBite), "Valid")]
     public static class Patch_BloodfeederBite_Valid {
         public static bool Prepare() {
-            return LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>().bloodfeedOnPeopleWhoWant
-              && ((ModsConfig.IdeologyActive && ModsConfig.BiotechActive) || ModsConfig.IsActive("More.Backstories"));
+            return Settings.IsOptionSet("bloodfeedOnPeopleWhoWant")
+                && ModsConfig.BiotechActive // for bloodfeeders
+                && (ModsConfig.IdeologyActive  // for Ideologies who like bloodfeeders
+                    || ModsConfig.IsActive("More.Backstories") // for backstory VB_Thrall
+                   );
         }
         //  ...I COULD do this as a Transpile....but there's almost no reason to.  I guess I'm so 
         //     used to worrying about performance, but this only gets run when the player clicks.

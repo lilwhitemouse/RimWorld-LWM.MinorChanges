@@ -39,7 +39,7 @@ namespace LWM.MinorChanges
     [HarmonyPatch(typeof(RimWorld.JobDriver_UnloadInventory), "<MakeNewToils>b__7_0")]
     static class Patch_JobD_UnloadInv {
         static bool Prepare() {
-            return LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>().allowMultiUnloading;
+            return Settings.IsOptionSet("allowMultiUnloading");
         }
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions,
                                                        ILGenerator generator) {

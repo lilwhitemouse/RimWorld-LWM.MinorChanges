@@ -31,8 +31,7 @@ namespace LWM.MinorChanges
     [HarmonyPatch(typeof(RimWorld.Designator_PlantsCut), "AffectsThing")]
     static class Patch_Designator_PlantsCut_AffectsThing {
         static bool Prepare() {
-            return true;
-//            return LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>().
+            return Settings.IsOptionSet("cutTreesLikePlants");
         }
         static bool Prefix(ref bool __result) {
             __result=true;
