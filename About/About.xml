@@ -1,52 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-	<name>LWM's Minor Changes</name>
-	<author>Little White Mouse</author>
-    <packageId>LWM.MinorChanges</packageId>
-	<supportedVersions>
-      <li>1.0</li>
-      <li>1.1</li>
-      <li>1.2</li>
-      <li>1.3</li>
-      <li>1.4</li>
-	</supportedVersions>
-    <modDependencies>
-        <li>
-            <packageId>brrainz.harmony</packageId>
-            <displayName>Harmony</displayName>
-            <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
-            <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
-        </li>
-    </modDependencies>
-    <loadAfter>
-        <li>brrainz.harmony</li>
-    </loadAfter>
-	<description>A set of minor fixes, tweaks, and changes to the game.  While many of these ARE "fixes," they oh-so-slightly slow the game and probably don't add a whole lot more than a little realism (e.g., smelters giving off heat).  Some of them make the game slightly harder, some make the game much easier to play.  I like all of them (otherwise, I wouldn't have made them, right?)
+  <name>LWM's Minor Changes</name>
+  <author>Little White Mouse</author>
+  <packageId>LWM.MinorChanges</packageId>
+  <supportedVersions>
+    <li>1.0</li>
+    <li>1.1</li>
+    <li>1.2</li>
+    <li>1.3</li>
+    <li>1.4</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+  <description>A set of minor fixes, tweaks, and changes to the game. Some of these you may or may not want (they oh-so-slightly slow the game and probably don't add a whole lot more than a little realism (e.g., smelters giving off heat)), while some of them make life much much easier (easier casting, more pinhole information).  Some of them make the game slightly harder, some make the game much easier to play.  I like all of them (otherwise, I wouldn't have made them, right?) and now I share them with you.
 
-I have added mod settings that allow turning off most of the changes.  IMPORTANT NOTE: you will have to restart the game to make these changes take place.
+IMPORTANT NOTE: Most of the changes are turned off by default! You have to turn them on first! (And yes, you have to restart the game to make these changes take place!)
 
 Current changes:
 
-More "realism":
- * Smelters give off heat
- * Computers (hi-tech research benches) give off heat
- ** (maybe later they will fry if the heat gets too much)
+BugFix:
+ * Can now load multiple animals into single transport pod (Devs will fix in future release)
 
-UI:
- * If you have selected a blueprint, and it gets built, you now have selected the finished item.  Huzzah!
- * You can use . and , to select Next and Previous animals now too! Works with both tame pets and wildlife.
-
-QoL / Ease of Use:
+Turned on by default:
+ * Ask before colonists wed (no more surprise weddings)
+ * Multiple people can unload an animal at a time
+ * Select Next and Previous animals/wildlife/visitors/enemies with , and . (mostly works)
+ * Better pinholes show how long until they end in burnout
  * Penoxycyline now defaults to being taken every 5 days
- * Weddings now only start with user permission.
- * Player may now change style of any (building) blueprint. Use this power wisely! But if you want the occasional morbid lamp in your mausoleum, go for it!
+ * Fast creation of multiple Animal Sleeping Spots
+ * Cut mature trees with "cut plants" key ('y')
+ * Show how long a biosculpting cycle has left when selecting a colonist
+ * Parents do not breastfeed in Dub's Bad Hygiene bathrooms (ew)
+ * Show meditation types avialable when assigning thrones
+ * Allow changing Ideology Styles for furniture you build
+ * Pollution Pumps (and Pollux trees) show how much pollution is left
 
-Fixes / Improvements:
+Turned off by default:
+ * Easier casting: queue up psycasts (and other abilities?) like regular tasks, outside combat!
+ * Bloodfeeders can feed on visitors who like being fed on (broody teens, emo housespouses, etc)
+ * Change pollution overlay color!
+ * Smelters give off heat (a lot)
+ * Computers (hi-tech research benches) give off heat
+ ** (maybe I will make it so they fry if the heat gets too much)
+ * Easier Convert! Moral Guide "Convert" power is twice as powerful - I feel improves story play
+ * Label psycast neurotrainer levels (so if you have 20 in storage you can see which are level 2)
+ * Geotheraml Power Plants are walkable (REALLY changes the way excess heat acts, but stops doors from catching fire)
+ * Cheaper Flagstone (costs 2): This should work with any modded material. I hope.
+ * A few silly things that don't affect gameplay much but might be fun:)
+
+Not quite working right in RimWorld 1.4 and I haven't fixed it but you can try it:
  * "Spots" can now be placed pretty much anywhere, including under other things.  Want to get married sitting on thrones or standing in a river?  Go for it.  Want to party around lava?  Have fun (lava not included).
  ** Party Spots may or may not work outside (they certainly don't in terrible weather), but they now work under objects...heck even under some walls.  Use discretion.
- * Multiple colonists can unload the same animal (sort of)
- * Geothermal Plants are now walkable - this significantly changes the heat profile in certain situations, so it's turned off by default. But if you want to enclose your geoplant and your doors keep cataching on fire, this setting is for you.
+
+Licensed under LGPL, because I like shariang and if anyone else can make use of what I've done, huzzah!
+
+Have fun kiddos!
 
 </description>
-	<url>https://github.com/lilwhitemouse/RimWorld-LWM.MinorChanges</url>
+  <url>https://github.com/lilwhitemouse/RimWorld-LWM.MinorChanges</url>
 </ModMetaData>
