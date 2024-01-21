@@ -162,7 +162,7 @@ namespace LWM.MinorChanges
                 DrawColorOptions(ref curY, rectThatHasEverything.width, ref Patch_PollutionGrid_Color.ourColor,
                     delegate()
                     {
-                        if (Current.ProgramState != ProgramState.Playing) return;
+                        if (Current.ProgramState != ProgramState.Playing || Find.Maps == null) return;
                         foreach (var map in Find.Maps)
                         {
                             if (map != null)
