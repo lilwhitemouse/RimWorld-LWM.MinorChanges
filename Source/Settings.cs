@@ -162,6 +162,7 @@ namespace LWM.MinorChanges
                 DrawColorOptions(ref curY, rectThatHasEverything.width, ref Patch_PollutionGrid_Color.ourColor,
                     delegate()
                     {
+                        if (Current.ProgramState != ProgramState.Playing) return;
                         foreach (var map in Find.Maps)
                         {
                             if (map != null)
@@ -274,7 +275,7 @@ namespace LWM.MinorChanges
             {
                 //Log.Message("Converting " + label + " from [" + colorFragment + "] to [" + sliderValue + "]");
                 colorFragment = sliderValue;
-                onChange();
+                if (onChange != null) onChange();
             }
             return;
         }
