@@ -97,14 +97,16 @@ namespace LWM.MinorChanges
         static void CheckIfShouldStartWedding(Pawn p1, Pawn p2) {
             // The dialog window is modeled after RW.IncidentWorker_CaravanDemand
             //   (caravan ambushed, demand XYZ, give and leave, refuse and fight, etc)
-            // TODO -translate this, eh?
-            DiaNode diaNode = new DiaNode(""+p1+" and "+p2+" want to get married - is today the day?");
-            DiaOption optionYes=new DiaOption("\"Ding dang dong\" go the wedding bells!");
+            string yesPrompt = "LWMMCweddingYes" + Rand.RangeInclusive(1, 7).ToString();
+            // Ugh. New translation methods. Ugh. I stole this from MentalState_SocialFighting
+            // Insha'allah it'll work. I don't have a good way to test it right now ><
+            DiaNode diaNode = new DiaNode("LWMMCweddingPromprt".Translate(p1.Label, p2.Label, p1.Named("PAWN1"), p2.Named("PAWN2")));
+            DiaOption optionYes = new DiaOption(yesPrompt.Translate());
             optionYes.action=delegate() {
                 p1.Map.lordsStarter.TryStartMarriageCeremony(p1, p2);
             };
             optionYes.resolveTree=true;
-            DiaOption optionNo=new DiaOption("Now is not the best time, come to think of it...");
+            DiaOption optionNo = new DiaOption("LWMMCweddingNo".Translate());
             optionNo.resolveTree=true;
             diaNode.options.Add(optionYes);
             diaNode.options.Add(optionNo);
