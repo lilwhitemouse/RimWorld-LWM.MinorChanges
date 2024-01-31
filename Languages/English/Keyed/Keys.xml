@@ -5,12 +5,14 @@
   <LWMMCweddingPromptMultiplayer>Only game host should say "yes" - everyone else "no". I think.</LWMMCweddingPromptMultiplayer>
   <!-- Wedding "yes" prompts - feel free to translate to your local culture -->
   <!-- If more are added, be sure to update Patch_Pawn_RelationsTracker.cs -->
-  <LWMMCweddingYes1>Ding Dang Dong go the Wedding Bells!</LWMMCweddingYes1><!-- John McCutcheon has a v nice version of Froggie went a courtin -->
-  <LWMMCweddingYes2>Break open the oysters and spill the champaign! Time to party!</LWMMCweddingYes2><!-- another line from above -->
-  <LWMMCweddingYes3>I'm getting married in the colony! Ding Dong the bells are gonna chime!</LWMMCweddingYes3><!-- My Fair Lady -->
-  <LWMMCweddingYes4>Cue up Pachabel's Canon! Let's start the party!</LWMMCweddingYes4><!-- VERY common music in weddings, it's so pretty -->
-  <LWMMCweddingYes5>Time to put some rings on people. Let's get married!</LWMMCweddingYes5><!-- Isn't there some song about putting a ring on it? -->
-  <LWMMCweddingYes6>Marriage. Marriage is what brings us together today. Marriage, that most blessed arrangement, that dream within a dream...</LWMMCweddingYes6><!-- Princess Bride, without the accents so foreign players can still understand it. If you know the Princess Bride quote, you already hear it in your head anyway -->
-  <LWMMCweddingYes7>Yes! It is settled between us already that we are to be the happiest couple in the world.</LWMMCweddingYes7><!-- Pride and Prejudice -->
-  <LWMMCweddingNo>Now is not the best time, come to think of it...</LWMMCweddingNo>
+  <!-- Important: keep translations to short lines about this long:                            |
+                  You can separate the line with '\n'                                          |-->
+  <LWMMCweddingYes1>Yes! Ding Dang Dong go the Wedding Bells!</LWMMCweddingYes1><!-- John McCutcheon has a v nice version of Froggie went a courtin -->
+  <LWMMCweddingYes2>Yes! Break open the oysters and spill the champaign! Time to party!</LWMMCweddingYes2><!-- another line from above -->
+  <LWMMCweddingYes3>Yes! I'm getting married in the colony! Ding Dong the bells are gonna chime!</LWMMCweddingYes3><!-- My Fair Lady -->
+  <LWMMCweddingYes4>Yes! Cue up Pachabel's Canon! We can cry over how happy we are!</LWMMCweddingYes4><!-- VERY common music in weddings, it's so pretty -->
+  <LWMMCweddingYes5>Yes! Time to put some rings on people. Let's get married!</LWMMCweddingYes5><!-- Isn't there some song about putting a ring on it? -->
+  <LWMMCweddingYes6>Yes! Marriage. Marriage is what brings us together today.\nMarriage, that most blessed arrangement, that dream within a dream...</LWMMCweddingYes6><!-- Princess Bride, without the accents so foreign players can still understand it. If you know the Princess Bride quote, you already hear it in your head anyway -->
+  <LWMMCweddingYes7>Yes! It is settled between us already that\n  we are to be the happiest couple in the world.</LWMMCweddingYes7><!-- Pride and Prejudice -->
+  <LWMMCweddingNo>No. Now is not the best time, come to think of it...</LWMMCweddingNo>
 </LanguageData>

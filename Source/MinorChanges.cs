@@ -26,7 +26,7 @@ namespace LWM.MinorChanges
 
         public MinorChangesMod(ModContentPack content) : base(content) {
             harmony = new HarmonyLib.Harmony("net.littlewhitemouse.RimWorld.MinorChanges");
-            Log.Message("LWM.MinorChanges Version 1.4.0.3: initiating first transpile. Enjoy!");
+            Log.Message("LWM.MinorChanges Version 1.4.0.4: initiating first transpile. Enjoy!");
             var orig = Patch_ThingDefGenerator_Neurotrainer_Label.TargetMethod();
             if (orig != null)
             {

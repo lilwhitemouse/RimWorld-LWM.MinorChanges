@@ -42,8 +42,8 @@ namespace LWM.MinorChanges
      */
     [HarmonyPatch(typeof(RimWorld.Pawn_RelationsTracker), "Tick_CheckStartMarriageCeremony")]
     static class Patch_Pawn_RelationsTracker {
-        //todo: much translation so wow
-        //todo: should I add a setting for this?  Prolly not, as it doesn't change game play.
+        //Hmm... should I add a setting for this?  Prolly not, as it doesn't change game play.
+        public const int NumberWeddingPrompts = 7;
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions,
                                                        ILGenerator generator) {
             List<CodeInstruction> code=instructions.ToList();
@@ -59,7 +59,8 @@ namespace LWM.MinorChanges
                     (FieldInfo)code[i+1].operand==mapDotLordsStarter &&
                     i+10 < code.Count && // safety check here:
                     code[i+9].opcode==OpCodes.Callvirt &&
-                    ((MethodInfo)code[i+9].operand).Name=="TryStartMarriageCeremony") {
+                    ((MethodInfo)code[i+9].operand).Name=="TryStartMarriageCeremony"
+                    /* todo? Could put test here to see if it has two parameters */ ) {
                     //this.pawn.Map.lordsStarter.TryStartMarriageCeremony(this.pawn, this.directRelations[i].otherPawn);
                     //         ^                                                    ^
                     //         we are here (pawn1 is on the stack)                  |
@@ -97,10 +98,11 @@ namespace LWM.MinorChanges
         static void CheckIfShouldStartWedding(Pawn p1, Pawn p2) {
             // The dialog window is modeled after RW.IncidentWorker_CaravanDemand
             //   (caravan ambushed, demand XYZ, give and leave, refuse and fight, etc)
-            string yesPrompt = "LWMMCweddingYes" + Rand.RangeInclusive(1, 7).ToString();
+            string yesPrompt = "LWMMCweddingYes" + Rand.RangeInclusive(1, NumberWeddingPrompts).ToString();
             // Ugh. New translation methods. Ugh. I stole this from MentalState_SocialFighting
             // Insha'allah it'll work. I don't have a good way to test it right now ><
-            DiaNode diaNode = new DiaNode("LWMMCweddingPromprt".Translate(p1.Label, p2.Label, p1.Named("PAWN1"), p2.Named("PAWN2")));
+            DiaNode diaNode = new DiaNode("LWMMCweddingPrompt".Translate(p1.NameFullColored, p2.NameFullColored, 
+                                                                         p1.Named("PAWN1"), p2.Named("PAWN2")));
             DiaOption optionYes = new DiaOption(yesPrompt.Translate());
             optionYes.action=delegate() {
                 p1.Map.lordsStarter.TryStartMarriageCeremony(p1, p2);
@@ -113,4 +115,43 @@ namespace LWM.MinorChanges
             Find.WindowStack.Add(new Dialog_NodeTree(diaNode, false, false, null /*title*/));
         }
     }
+    /************* DEBUG TEST FOR MARRIAGE TEXTS *****************/
+#if false
+    // Throws up marriage prompts for the first two pawns on the map on game load.
+    //   Selecting the "yes" prompt tries the next.
+    //   Selecting the "no" stops
+    public class Tmp : GameComponent
+    {
+        int count = 1;
+        public Tmp(Game game)
+        {
+            count = 1;
+        }
+        public override void LoadedGame()
+        {
+            if (Find.CurrentMap != null)
+            {
+                Pawn p1 = Find.CurrentMap.mapPawns.FreeColonists[0];
+                Pawn p2 = Find.CurrentMap.mapPawns.FreeColonists[1];
+
+                string yesPrompt = "LWMMCweddingYes" + count.ToString();  //Rand.RangeInclusive(1, 7).ToString();
+                // Ugh. New translation methods. Ugh. I stole this from MentalState_SocialFighting
+                // Insha'allah it'll work. I don't have a good way to test it right now ><
+                DiaNode diaNode = new DiaNode("LWMMCweddingPrompt".Translate(p1.NameFullColored, p2.NameFullColored, p1.Named("PAWN1"), p2.Named("PAWN2")));
+                DiaOption optionYes = new DiaOption(yesPrompt.Translate());
+                optionYes.action = delegate () {
+                    count++;
+                    if (count > Patch_Pawn_RelationsTracker.NumberWeddingPrompts) count = 1;
+                    LoadedGame();
+                };
+                optionYes.resolveTree = true;
+                DiaOption optionNo = new DiaOption("LWMMCweddingNo".Translate());
+                optionNo.resolveTree = true;
+                diaNode.options.Add(optionYes);
+                diaNode.options.Add(optionNo);
+                Find.WindowStack.Add(new Dialog_NodeTree(diaNode, false, false, null /*title*/));
+            }
+        }
+    }
+#endif
 }
