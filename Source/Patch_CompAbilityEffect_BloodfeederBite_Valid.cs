@@ -49,9 +49,9 @@ namespace LWM.MinorChanges
                     ModsConfig.BiotechActive &&
                     // Precept:
                     ((ModsConfig.IdeologyActive && 
-                      pawn.ideo.Ideo.HasPrecept(DefDatabase<PreceptDef>.GetNamed("Bloodfeeders_Revered")))
+                      pawn.ideo?.Ideo?.HasPrecept(DefDatabase<PreceptDef>.GetNamed("Bloodfeeders_Revered")) == true )
                      || // backstory:
-                     (ModsConfig.IsActive("More.Backstories") && pawn.story.Adulthood?.defName == "VB_Thrall")))
+                     (ModsConfig.IsActive("More.Backstories") && pawn.story?.Adulthood?.defName == "VB_Thrall")))
                 {
                     __result = true;
                     return false;
