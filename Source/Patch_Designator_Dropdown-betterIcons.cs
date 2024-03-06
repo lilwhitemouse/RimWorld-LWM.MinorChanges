@@ -45,6 +45,15 @@ namespace LWM.MinorChanges
 //            return LoadedModManager.GetMod<MinorChangesMod>().GetSettings<Settings>().
         }
         static bool Prefix(ref ThingDef __result, Designator des) {
+            // This is throwing errors for 1l_apaJ on steam:
+            /*
+             * Root level exception in OnGUI(): System.NullReferenceException: Object reference not set to an instance of an object
+               at LWM.MinorChanges.Patch_Designator_Dropdown.Prefix (Verse.ThingDef& __result, Verse.Designator des) [0x0002b] in <37a861eee9a4448fb7a61f19687aee6e>:0
+               at (wrapper dynamic-method) RimWorld.Designator_Dropdown.RimWorld.Designator_Dropdown.GetDesignatorCost_Patch1(RimWorld.Designator_Dropdown,Verse.Designator)
+             * ...I have no idea what could even be happening :(
+             */
+            // so....let's try re-writing it. Why not allow fallback to vanilla anyway, eh?
+            /*
             if (des is Designator_Place designator_Place)
             {
                 BuildableDef placingDef = designator_Place.PlacingDef;
@@ -62,6 +71,24 @@ namespace LWM.MinorChanges
             }
             __result = null;
             return false;
+            */
+            try
+            {
+                if (des is Designator_Place designator_Place)
+                {
+                    BuildableDef placingDef = designator_Place.PlacingDef;
+                    if (placingDef is ThingDef && placingDef?.MadeFromStuff == false)
+                    {
+                        __result = (placingDef as ThingDef);
+                        return false;
+                    }
+                }
+                return true; // why bother trying anything else anyway? This doesn't actually get called super often
+            } catch (Exception e)
+            {
+                Log.Warning("LWM.MinorChanges: Designator_Dropdown for better icons failed for some weird reason: "+e);
+                return true; // fallback
+            }
         }
     }
 }
